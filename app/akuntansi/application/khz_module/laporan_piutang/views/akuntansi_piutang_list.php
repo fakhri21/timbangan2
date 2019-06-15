@@ -1,5 +1,5 @@
 <div class="container">
-    <div class="box box-primary">
+    <div class="box box-primary mt-5">
         <div class="box-header">
             <h1 class="display-4">Daftar Voucher Jurnal</h1>
         </div>

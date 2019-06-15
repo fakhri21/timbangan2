@@ -24,8 +24,8 @@ function goBack() {
                     </div>
                 </div>
                 <div class="col-md-4 text-right">
-                    <?php echo anchor(base_url('m_customer/create'), 'Create', 'class="btn btn-primary"'); ?>
-                    <?php echo anchor(base_url('m_customer/excel'), 'Excel', 'class="btn btn-primary"'); ?>
+                    <?php echo anchor(base_url('m_customer/create'), '<i class="fa fa-plus"></i> Tambah Data', 'class="btn btn-primary"'); ?>
+                    <?php echo anchor(base_url('m_customer/excel'), '<i class="fa fa-file"></i> Ekspor ke excel', 'class="btn btn-primary"'); ?>
                 </div>
             </div>
 

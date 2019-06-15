@@ -69,20 +69,16 @@ public function __construct() {
         }
         
 
-        $data['kredit']=array(  'id_coa' =>$id_coa_kredit ,
-<<<<<<< HEAD
-                                'kredit'=>$this->input->post('nilai'),
+        $data['kredit']=array(  'id_coa' =>$id_coa_kredit ,'kredit'=>$this->input->post('nilai'),
                                 'keterangan'=>$this->input->post('keterangan') );
 
         $data['debit']=array(   'id_coa' =>$id_coa_debit ,
                                 'debit'=>$this->input->post('nilai'),
-=======
                                 'kredit'=>$this->input->post['nilai'],
                                 'keterangan'=>$this->input->post('keterangan') );
 
         $data['debit']=array(   'id_coa' =>$id_coa_debit ,
                                 'debit'=>$this->input->post['nilai'],
->>>>>>> fb1f1cde5d7f1feeb7b6f259f1cdfcde14fa10e6
                                 'keterangan'=>$this->input->post('keterangan') );
 
         $alamat_api=base_url('akuntansi/jurnalumum/simpan_api');

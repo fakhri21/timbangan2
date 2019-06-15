@@ -9,12 +9,12 @@ function goBack() {
 </script> 
 </div>
 
-    <div class="box box-primary" style="margin-top: 30px;">
-        <div class="box-header">
+    <div class="card" style="margin-top: 30px;">
+        <div class="card-header">
             <h3>List Supplier</h3>
         </div>
 
-        <div class="box-body">
+        <div class="card-body">
             <div class="row" style="margin-bottom: 10px">
                 <div class="col-md-4">
                 </div>
@@ -24,15 +24,15 @@ function goBack() {
                     </div>
                 </div>
                 <div class="col-md-4 text-right">
-                    <?php echo anchor(base_url('m_supplier/create'), 'Create', 'class="btn btn-primary"'); ?>
-                    <?php echo anchor(base_url('m_supplier/excel'), 'Excel', 'class="btn btn-primary"'); ?>
+                    <?php echo anchor(base_url('m_supplier/create'), '<i class="fa fa-plus"></i> Tambah Data', 'class="btn btn-primary"'); ?>
+                    <?php echo anchor(base_url('m_supplier/excel'), '<i class="fa fa-file"></i> Ekspor ke Excel', 'class="btn btn-primary"'); ?>
                 </div>
             </div>
 
             <table class="table table-bordered table-striped" id="mytable">
             <thead>
                 <tr>
-                    <th width="80px">No</th>
+                    <th width="10px">No</th>
 		    <th>Nama</th>
 		    <th>Alamat</th>
 		    <th>No Handphone</th>

@@ -21,66 +21,64 @@ if (!empty($this->session->flashdata('message_failed'))) {
 
 ?>
 
-<div  class="container">
-    <div class="row">
-    <div class="card-columns ">
-        <div class="card">
+<div class="col-md-4 offset-md-4 mt-5 mb-5">
+    <div class="card">
             <div class="card-body">
                 <h4 class="card-title">Laporan Piutang</h4>
-                            <form method="post" enctype="multipart/form-data" action="<?php echo base_url(); ?>laporan_piutang/tampil_piutang">
-                                <div class="form-group">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <label for="hari" class="input-group-text">Tanggal Awal</label>
-                                        </div>
-                                        <input type="text" name="hari" id="hari" class="hari form-control" value="">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <label for="hari" class="input-group-text">Tanggal Akhir</label>
-                                        </div>
-                                        <input type="text" name="hari_akhir" id="hari_akhir" class="hari form-control" value="">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
+                <form method="post" enctype="multipart/form-data" action="<?php echo base_url(); ?>laporan_piutang/tampil_piutang">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <label for="hari" class="input-group-text"><i class="fa fa-calendar"></i></label>
+                            </div>
+                            <input type="text" name="hari" id="hari" class="hari form-control" placeholder="Masukkan Tanggal Awal" value="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <label for="hari" class="input-group-text"><i class="fa fa-calendar"></i></label>
+                            </div>
+                            <input type="text" name="hari_akhir" id="hari_akhir" class="hari form-control" placeholder="Masukkan Tanggal Akhir" value="">
+                        </div>
+                    </div>
+                    <div class="form-group row">
 
-                                <div class="col-2">
-                                    <label class="align-bottom pt-3">COA</label>
-                                </div>
-                                <div class="col">
-                                    <select name="coa" id="coa" value="" class="btn-block"></select>
-                                </div>  
+                        <div class="col-2">
+                            <label class="align-bottom pt-3">COA</label>
+                        </div>
+                        <div class="col">
+                            <select name="coa" id="coa" value="" class="form-control"></select>
+                        </div>
 
-                                </div>
-                                <div class="form-group row">
-                                    <div class="col-2">
-                                        <label>Status</label>
-                                    </div>
-                                    <div class="col mx-auto">
-                                        <div class="custom-control custom-radio custom-control-inline">
-                                            <input checked type="radio" id="customRadioInline3" name="status" value="0" class="custom-control-input">
-                                            <label class="custom-control-label" for="customRadioInline3">Xls</label>
-                                        </div>
-                                        <div class="custom-control custom-radio custom-control-inline">
-                                            <input type="radio" id="customRadioInline4" name="status" value="pdf" class="custom-control-input">
-                                            <label class="custom-control-label" for="customRadioInline4">PDF</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <div class="col">
-                                        <input type="submit" name="" value="Enter" class="btn-block btn btn-primary">
-                                    </div>
-                                   
-                                </div>
-                            </form>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-2">
+                            <label>Status</label>
+                        </div>
+                        <div class="col mx-auto">
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input checked type="radio" id="customRadioInline3" name="status" value="0" class="custom-control-input">
+                                <label class="custom-control-label" for="customRadioInline3">Xls</label>
+                            </div>
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input type="radio" id="customRadioInline4" name="status" value="pdf" class="custom-control-input">
+                                <label class="custom-control-label" for="customRadioInline4">PDF</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col">
+                            <input type="submit" name="" value="Enter" class="btn-block btn btn-primary">
+                        </div>
+
+                    </div>
+                </form>
             </div>
         </div>
-    </div>
-    </div>
 </div>
+
+
 <script>
 
     $(".hari").datepicker({

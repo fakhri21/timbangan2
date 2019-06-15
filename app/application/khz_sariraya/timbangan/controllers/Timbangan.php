@@ -62,14 +62,11 @@ public function __construct() {
                             'bits'      =>get_option('data_bits'),
                             'spotBit'   =>1
                              );
-<<<<<<< HEAD
         /* $data= get_nilai_timbangan($option);
         $result=doubleval(substr($data,7,7)); */
-=======
+        
         $data= get_nilai_timbangan($option);
         $result=doubleval(substr($data,7,7));
->>>>>>> fb1f1cde5d7f1feeb7b6f259f1cdfcde14fa10e6
-
         echo $result;
 
 

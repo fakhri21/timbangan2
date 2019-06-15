@@ -1,20 +1,21 @@
 <div class="col-md-12">
-<div class="mt-4">
-<a style="padding: 9px 15px; background: #81c784; color: #fff; cursor: pointer; border-radius:3px;"onclick="goBack()"><i class="fa fa-angle-left"></i> Kembali</a>
+    <div class="mt-4">
+        <a style="padding: 9px 15px; background: #81c784; color: #fff; cursor: pointer; border-radius:3px;" onclick="goBack()"><i class="fa fa-angle-left"></i> Kembali</a>
 
-<script>
-function goBack() {
-  window.history.back();
-}
-</script> 
-</div>
+        <script>
+            function goBack() {
+                window.history.back();
+            }
 
-    <div class="box box-primary" style="margin-top: 30px;">
-        <div class="box-header">
+        </script>
+    </div>
+
+    <div class="card" style="margin-top: 30px;">
+        <div class="card-header">
             <h3>List Kendaraan</h3>
         </div>
 
-        <div class="box-body">
+        <div class="card-body">
             <div class="row" style="margin-bottom: 10px">
                 <div class="col-md-4">
                 </div>
@@ -24,14 +25,12 @@ function goBack() {
                     </div>
                 </div>
                 <div class="col-md-4 text-right">
-                    <?php echo anchor(base_url('m_kendaraan/create'), 'Create', 'class="btn btn-primary"'); ?>
-                    <?php echo anchor(base_url('m_kendaraan/excel'), 'Excel', 'class="btn btn-primary"'); ?>
+                    <?php echo anchor(base_url('m_kendaraan/create'), '<i class="fa fa-plus"></i> Tambah Data', 'class="btn btn-primary"'); ?>
+                    <?php echo anchor(base_url('m_kendaraan/excel'), '<i class="fa fa-file-excel-o"></i> Cetak ke Excel', 'class="btn btn-primary"'); ?>
                 </div>
             </div>
-            
-            <div class="row">
-                <div class="col">
-                   <table style="width:100%;" class="table table-bordered table-striped" id="mytable">
+
+            <table style="width:100%;" class="table table-bordered table-striped" id="mytable">
                 <thead>
                     <tr>
                         <th>No</th>
@@ -42,77 +41,75 @@ function goBack() {
                     </tr>
                 </thead>
 
-            </table>                    
-                </div>
-            </div>
+            </table>
 
-            
+
         </div>
     </div>
 </div><!-- col -->
 
 
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $.fn.dataTableExt.oApi.fnPagingInfo = function(oSettings) {
-                return {
-                    "iStart": oSettings._iDisplayStart,
-                    "iEnd": oSettings.fnDisplayEnd(),
-                    "iLength": oSettings._iDisplayLength,
-                    "iTotal": oSettings.fnRecordsTotal(),
-                    "iFilteredTotal": oSettings.fnRecordsDisplay(),
-                    "iPage": Math.ceil(oSettings._iDisplayStart / oSettings._iDisplayLength),
-                    "iTotalPages": Math.ceil(oSettings.fnRecordsDisplay() / oSettings._iDisplayLength)
-                };
+<script type="text/javascript">
+    $(document).ready(function() {
+        $.fn.dataTableExt.oApi.fnPagingInfo = function(oSettings) {
+            return {
+                "iStart": oSettings._iDisplayStart,
+                "iEnd": oSettings.fnDisplayEnd(),
+                "iLength": oSettings._iDisplayLength,
+                "iTotal": oSettings.fnRecordsTotal(),
+                "iFilteredTotal": oSettings.fnRecordsDisplay(),
+                "iPage": Math.ceil(oSettings._iDisplayStart / oSettings._iDisplayLength),
+                "iTotalPages": Math.ceil(oSettings.fnRecordsDisplay() / oSettings._iDisplayLength)
             };
+        };
 
-            var t = $("#mytable").dataTable({
-                initComplete: function() {
-                    var api = this.api();
-                    $('#mytable_filter input')
-                        .off('.DT')
-                        .on('keyup.DT', function(e) {
-                            if (e.keyCode == 13) {
-                                api.search(this.value).draw();
-                            }
-                        });
+        var t = $("#mytable").dataTable({
+            initComplete: function() {
+                var api = this.api();
+                $('#mytable_filter input')
+                    .off('.DT')
+                    .on('keyup.DT', function(e) {
+                        if (e.keyCode == 13) {
+                            api.search(this.value).draw();
+                        }
+                    });
+            },
+            oLanguage: {
+                sProcessing: "loading..."
+            },
+            processing: true,
+            serverSide: true,
+            ajax: {
+                "url": "m_kendaraan/json",
+                "type": "POST"
+            },
+            columns: [{
+                    "data": "uniqid",
+                    "orderable": false
+                }, {
+                    "data": "id_kendaraan"
+                }, {
+                    "data": "no_plat"
+                }, {
+                    "data": "nama_kendaraan"
                 },
-                oLanguage: {
-                    sProcessing: "loading..."
-                },
-                processing: true,
-                serverSide: true,
-                ajax: {
-                    "url": "m_kendaraan/json",
-                    "type": "POST"
-                },
-                columns: [{
-                        "data": "uniqid",
-                        "orderable": false
-                    }, {
-                        "data": "id_kendaraan"
-                    }, {
-                        "data": "no_plat"
-                    }, {
-                        "data": "nama_kendaraan"
-                    },
-                    {
-                        "data": "action",
-                        "orderable": false,
-                        "className": "text-center"
-                    }
-                ],
-                order: [
-                    [0, 'desc']
-                ],
-                rowCallback: function(row, data, iDisplayIndex) {
-                    var info = this.fnPagingInfo();
-                    var page = info.iPage;
-                    var length = info.iLength;
-                    var index = page * length + (iDisplayIndex + 1);
-                    $('td:eq(0)', row).html(index);
+                {
+                    "data": "action",
+                    "orderable": false,
+                    "className": "text-center"
                 }
-            });
+            ],
+            order: [
+                [0, 'desc']
+            ],
+            rowCallback: function(row, data, iDisplayIndex) {
+                var info = this.fnPagingInfo();
+                var page = info.iPage;
+                var length = info.iLength;
+                var index = page * length + (iDisplayIndex + 1);
+                $('td:eq(0)', row).html(index);
+            }
         });
+    });
 
-    </script>
+</script>

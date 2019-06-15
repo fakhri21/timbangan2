@@ -13,7 +13,7 @@ function goBack() {
         <div class="col">
             <div class="box box-primary" style="margin-top: 40px;">
                 <div class="box-header">
-                     <h3">Daftar struk</h3>
+                     <h3>Daftar struk</h3>
                      <?php echo $this->session->userdata('message') <> '' ? $this->session->userdata('message') : ''; ?>
                 </div>
                 <div class="box-body">

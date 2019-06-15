@@ -44,7 +44,7 @@ class M_supplier extends CI_Controller
     public function create() 
     {
         $data = array(
-            'button' => 'Create',
+            'button' => '<i class="fa fa-save"></i> Simpan',
             'action' => base_url('m_supplier/create_action'),
 	    'uniqid' => set_value('uniqid'),
 	    'nama' => set_value('nama'),
@@ -81,7 +81,7 @@ class M_supplier extends CI_Controller
 
         if ($row) {
             $data = array(
-                'button' => 'Update',
+                'button' => '<i class="fa fa-save"></i> Simpan',
                 'action' => base_url('m_supplier/update_action'),
 		'uniqid' => set_value('uniqid', $row->uniqid),
 		'nama' => set_value('nama', $row->nama),

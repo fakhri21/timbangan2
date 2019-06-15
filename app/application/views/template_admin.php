@@ -8,7 +8,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>AdminLTE 2 | Starter</title>
+  <title>Aplikasi Timbangan</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <link rel="stylesheet" href="<?php echo base_url(); ?>/assets/css/selectize.default.css">
@@ -58,8 +58,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
       </li>
     </ul>
 	
-	
-    <ul>
   </div>
   </div>
 </nav>
@@ -84,6 +82,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
        <?php echo $contents; ?>        
     </div>
 </div>
+    
+    <div class="mt-5 bg-dark" style="padding: 20px 0px;">
+        <p class="text-center" style="margin: 0; color: #fff;">Copyright &copy; 2019 CV. PUTRA SORAYA GROUP</p>
+    </div>
+
      
 <script>
   var base_url="<?php echo base_url(); ?>"
@@ -112,9 +115,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
      Both of these plugins are recommended to enhance the
      user experience. Slimscroll is required when using the
      fixed layout. -->
-<div>
-  <?php echo do_shortcode('[gtranslate]'); ?>
-</div>
+
 
 </body>
 </html>
