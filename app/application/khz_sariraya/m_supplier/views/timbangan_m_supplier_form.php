@@ -2,7 +2,7 @@
   <div class="card">
       <div class="card-body">
           
-          <h3 class="text-center mb-3">Tambah Data Supplier</h3>
+          <h3 class="text-center mb-3">Kelola Data Supplier</h3>
           
           <form action="<?php echo $action; ?>" method="post">
 	    <div class="form-group">

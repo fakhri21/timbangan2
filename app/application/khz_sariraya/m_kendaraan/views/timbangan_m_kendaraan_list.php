@@ -12,7 +12,7 @@
 
     <div class="card" style="margin-top: 30px;">
         <div class="card-header">
-            <h3>List Kendaraan</h3>
+            <h3>Daftar Kendaraan</h3>
         </div>
 
         <div class="card-body">

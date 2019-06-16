@@ -22,11 +22,11 @@ function goBack() {
                             <table class="table table-bordered table-striped" id="mytable">
                                 <thead>
                                     <tr>
-                                        <th width="80px">No</th>
-                                        <th>Id Bill</th>
-                                        <th>Waktu Timbang</th>
-                                        <th>Status</th>
-                                        <th width="200px">Action</th>
+                                        <th class="text-center" width="80px">No</th>
+                                        <th class="text-center">Id Bill</th>
+                                        <th class="text-center">Waktu Timbang</th>
+                                        <th class="text-center">Status</th>
+                                        <th class="text-center" width="200px">Action</th>
                                     </tr>
                                 </thead>
                             </table>
@@ -90,7 +90,7 @@ function goBack() {
             var length = info.iLength;
             var index = page * length + (iDisplayIndex + 1);
             var status='<label class="label label-success">Sudah Bayar</label>'
-            var aksi='<a href="daftar_struk/read/'+data.uniqid+'">Print</a> || '
+            var aksi='<a href="daftar_struk/read/'+data.uniqid+'"><button class="btn btn-primary"><i class="fa fa-print"></i> Cetak Struk</button></a>'
                         
 
         if (data.status==0) {
@@ -101,11 +101,11 @@ function goBack() {
                      
                         }
                         else if(data.status==1){
-                            status='<label class="label label-primary">Terposting</label>'
+                            status='<div class="text-center"><label style="padding: 5px 15px; border-radius: 5px;" class="label label-success">Terposting</label></div>'
 
                         }
                         else{
-                            status='<label class="label label-danger">Void</label>'
+                            status='<div class="text-center"><label style="padding: 5px 15px; border-radius: 5px;" class="label label-danger">Void</label></div>'
                         }
 
                         $('td:eq(0)', row).html(index);

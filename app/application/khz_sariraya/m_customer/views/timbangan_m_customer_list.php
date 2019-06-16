@@ -9,12 +9,12 @@ function goBack() {
 </script> 
 </div>
 
-    <div class="box box-primary" style="margin-top: 30px;">
-        <div class="box-header">
-            <h3>List Customer</h3>
+    <div class="card" style="margin-top: 30px;">
+        <div class="card-header">
+            <h3>Daftar Pelanggan</h3>
         </div>
 
-        <div class="box-body">
+        <div class="card-body">
             <div class="row" style="margin-bottom: 10px">
                 <div class="col-md-4">
                 </div>

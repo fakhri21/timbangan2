@@ -7,7 +7,6 @@
             function goBack() {
                 window.history.back();
             }
-
         </script>
     </div>
 
@@ -25,8 +24,15 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-body">
-                    <select id="search_voucher" placeholder="Payment"></select>
-                    <button id="bukaUlang" class="btn btn-success" onclick="current_voucher()"><i class="fa fa-arrow-right"></i> Buka Ulang</button>
+
+                    <div class="input-group">
+                        <select id="search_voucher" style="width: 60%;" placeholder="Payment"></select>
+                    </div>
+                    <div class="input-group">
+                        <button id="bukaUlang" class="btn btn-success" onclick="current_voucher()"><i class="fa fa-arrow-right"></i> Buka Ulang</button>
+                        <a class="btn btn-primary" style="margin-left: 7px;" href="<?php echo site_url();?>/app/daftar_struk"><i class="fa fa-file-o"></i> Daftar-struk</a>
+                    </div>
+
                     <div class="search-voucher-error" style="color:red;display:none;">Silahkan pilih kode voucher terlebih dahulu</div>
 
                     <div>
@@ -217,7 +223,6 @@
         })
 
     })
-
 </script>
 
 <script>
@@ -240,7 +245,6 @@
         $("#col-bruto").show()
         $("#col-tarra").hide()
     }
-
 </script>
 
 
@@ -303,5 +307,4 @@
             }
         })
     }
-
 </script>

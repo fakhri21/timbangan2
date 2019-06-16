@@ -11,7 +11,7 @@ function goBack() {
 
     <div class="card" style="margin-top: 30px;">
         <div class="card-header">
-            <h3>List Supplier</h3>
+            <h3>Daftar Supplier</h3>
         </div>
 
         <div class="card-body">

@@ -1,10 +1,12 @@
-
-<div class="col-md-12" style="margin-top: 30px;">
-    <h3>Kelola Kendaraan</h3>
-</div>
-
-<div class="col-md-6 col-sm-6 col-xs-12">
-   <form action="<?php echo $action; ?>" method="post">
+<div class="col-md-6 offset-md-3 col-sm-8 offset-sm-2 col-12">
+    <div class="card mt-5 mb-5">
+        <div class="card-body">
+           
+           <div class="mt-2 mb-2">
+               <h3 class="text-center">Formulir Kendaraan</h3>
+           </div>
+            
+            <form action="<?php echo $action; ?>" method="post">
 	    <div class="form-group">
             <label for="varchar">Id Kendaraan <?php echo form_error('id_kendaraan') ?></label>
             <input type="text" class="form-control" name="id_kendaraan" id="id_kendaraan" placeholder="Id Kendaraan" value="<?php echo $id_kendaraan; ?>" />
@@ -18,7 +20,10 @@
             <input type="text" class="form-control" name="nama_kendaraan" id="nama_kendaraan" placeholder="Nama Kendaraan" value="<?php echo $nama_kendaraan; ?>" />
         </div>
 	    <input type="hidden" name="uniqid" value="<?php echo $uniqid; ?>" /> 
-	    <button type="submit" class="btn btn-primary"><?php echo $button ?></button> 
-	    <a href="<?php echo base_url('m_kendaraan') ?>" class="btn btn-default">Cancel</a>
-	</form>    
+	    <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Simpan</button> 
+	    <a href="<?php echo base_url('m_kendaraan') ?>" class="btn btn-warning"><i class="fa fa-angle-left"></i> Kembali</a>
+	</form> 
+            
+        </div>
+    </div>
 </div>
