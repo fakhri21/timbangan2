@@ -221,9 +221,9 @@ abstract class Widget_Base extends Element_Base {
 	 * @access public
 	 *
 	 * @param string $section_id Section ID.
-	 * @param array  $args       Section arguments.
+	 * @param array  $args       Section arguments Optional.
 	 */
-	public function start_controls_section( $section_id, array $args ) {
+	public function start_controls_section( $section_id, array $args = [] ) {
 		parent::start_controls_section( $section_id, $args );
 
 		static $is_first_section = true;
@@ -297,12 +297,31 @@ abstract class Widget_Base extends Element_Base {
 	 * @return array Default edit tools.
 	 */
 	protected static function get_default_edit_tools() {
-		return [
+		$widget_label = __( 'Widget', 'elementor' );
+
+		$edit_tools = [
 			'edit' => [
 				'title' => __( 'Edit', 'elementor' ),
 				'icon' => 'edit',
 			],
 		];
+
+		if ( self::is_edit_buttons_enabled() ) {
+			$edit_tools += [
+				'duplicate' => [
+					/* translators: %s: Widget label */
+					'title' => sprintf( __( 'Duplicate %s', 'elementor' ), $widget_label ),
+					'icon' => 'clone',
+				],
+				'remove' => [
+					/* translators: %s: Widget label */
+					'title' => sprintf( __( 'Remove %s', 'elementor' ), $widget_label ),
+					'icon' => 'close',
+				],
+			];
+		}
+
+		return $edit_tools;
 	}
 
 	/**
@@ -345,7 +364,22 @@ abstract class Widget_Base extends Element_Base {
 			'show_in_panel' => $this->show_in_panel(),
 		];
 
+		$stack = Plugin::$instance->controls_manager->get_element_stack( $this );
+
+		if ( $stack ) {
+			$config['controls'] = $this->get_stack( false )['controls'];
+			$config['tabs_controls'] = $this->get_tabs_controls();
+		}
+
 		return array_merge( parent::_get_initial_config(), $config );
+	}
+
+	/**
+	 * @since 2.3.1
+	 * @access protected
+	 */
+	protected function should_print_empty() {
+		return false;
 	}
 
 	/**
@@ -431,7 +465,7 @@ abstract class Widget_Base extends Element_Base {
 
 		$settings = $this->get_settings();
 
-		$this->add_render_attribute( '_wrapper', 'data-element_type', $this->get_name() . '.' . ( ! empty( $settings['_skin'] ) ? $settings['_skin'] : 'default' ) );
+		$this->add_render_attribute( '_wrapper', 'data-widget_type', $this->get_name() . '.' . ( ! empty( $settings['_skin'] ) ? $settings['_skin'] : 'default' ) );
 	}
 
 	/**
@@ -457,6 +491,22 @@ abstract class Widget_Base extends Element_Base {
 		 */
 		do_action( 'elementor/widget/before_render_content', $this );
 
+		ob_start();
+
+		$skin = $this->get_current_skin();
+		if ( $skin ) {
+			$skin->set_parent( $this );
+			$skin->render();
+		} else {
+			$this->render();
+		}
+
+		$widget_content = ob_get_clean();
+
+		if ( empty( $widget_content ) ) {
+			return;
+		}
+
 		if ( Plugin::$instance->editor->is_edit_mode() ) {
 			$this->render_edit_tools();
 		}
@@ -464,17 +514,6 @@ abstract class Widget_Base extends Element_Base {
 		?>
 		<div class="elementor-widget-container">
 			<?php
-			ob_start();
-
-			$skin = $this->get_current_skin();
-			if ( $skin ) {
-				$skin->set_parent( $this );
-				$skin->render();
-			} else {
-				$this->render();
-			}
-
-			$widget_content = ob_get_clean();
 
 			/**
 			 * Render widget content.

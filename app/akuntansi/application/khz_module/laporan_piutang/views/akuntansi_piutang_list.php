@@ -1,7 +1,7 @@
 <div class="container">
     <div class="box box-primary mt-5">
         <div class="box-header">
-            <h1 class="display-4">Daftar Voucher Jurnal</h1>
+            <h3>Daftar Voucher Jurnal</h3>
         </div>
         <div class="box-body"> 
              <table class="table table-bordered table-striped" id="mytable">
@@ -86,23 +86,23 @@
                         var length = info.iLength;
                         var index = page * length + (iDisplayIndex + 1);
                         var status='<label class="label label-success">Sudah Bayar</label>'
-                        var aksi='<a href="laporan_piutang/detail_voucher/'+data.uniqid+'">Detail</a> || '
-                        var aksi=aksi+'<a href="laporan_piutang/print_voucher/'+data.uniqid+'">PRINT</a> || '
+                        var aksi='<a class="btn btn-primary btn-sm" href="laporan_piutang/detail_voucher/'+data.uniqid+'"><i class="fa fa-angle-right"></i> Detail</a> &nbsp;'
+                        var aksi=aksi+'<a class="btn btn-success btn-sm" href="laporan_piutang/print_voucher/'+data.uniqid+'"><i class="fa fa-print"></i> PRINT</a>'
                      
 
                         if (data.status==0) {
                             status='<label class="label label-warning">Pending</label>'
-                            var aksi=aksi+'<a onclick="javasciprt: return confirm(\'Are You Sure ?\')" href="akuntansi/ubahstatus/'+data.uniqid+'/1">POSTING</a> || '
-                            var aksi=aksi+'<a onclick="javasciprt: return confirm(\'Are You Sure ?\')" href="akuntansi/ubahstatus/'+data.uniqid+'/2">VOID</a> || '
+                            var aksi=aksi+'<a class="btn btn-success btn-sm" onclick="javasciprt: return confirm(\'Are You Sure ?\')" href="akuntansi/ubahstatus/'+data.uniqid+'/1"><i class="fa fa-check"></i> Posting</a> &nbsp;'
+                            var aksi=aksi+'<a class="btn btn-danger btn-sm" onclick="javasciprt: return confirm(\'Are You Sure ?\')" href="akuntansi/ubahstatus/'+data.uniqid+'/2"><i class="fa fa-circle"></i> Void</a>'
                      
                      
                         }
                         else if(data.status==1){
-                            status='<label class="label label-primary">Terposting</label>'
+                            status='<label class="label label-primary" style="padding: 5px 10px;">Terposting</label>'
 
                         }
                         else{
-                            status='<label class="label label-danger">Void</label>'
+                            status='<label class="label label-danger" style="padding: 5px 10px;">Void</label>'
                         }
 
                         $('td:eq(0)', row).html(index);

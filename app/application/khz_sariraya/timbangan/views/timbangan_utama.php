@@ -255,15 +255,6 @@
         alertify.alert("Berhasil Membuka " + $("#search_voucher").text())
     }
 
-    function isi_bruto(nilai) {
-        $('#bruto').val(nilai)
-        alert('<?php echo current_time( '
-            mysql ' ) ?>')
-    }
-
-    function isi_tarra(nilai) {
-        $('#tarra').val(nilai)
-    }
 
     function masuk_timbangan() {
         var kondisi = $("#status").val()

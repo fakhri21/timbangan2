@@ -85,7 +85,7 @@ class Widget_Google_Maps extends Widget_Base {
 	 * @return array Widget keywords.
 	 */
 	public function get_keywords() {
-		return [ 'google', 'map', 'embed' ];
+		return [ 'google', 'map', 'embed', 'location' ];
 	}
 
 	/**
@@ -108,7 +108,7 @@ class Widget_Google_Maps extends Widget_Base {
 		$this->add_control(
 			'address',
 			[
-				'label' => __( 'Address', 'elementor' ),
+				'label' => __( 'Location', 'elementor' ),
 				'type' => Controls_Manager::TEXT,
 				'dynamic' => [
 					'active' => true,
@@ -204,7 +204,6 @@ class Widget_Google_Maps extends Widget_Base {
 			]
 		);
 
-
 		$this->end_controls_tab();
 
 		$this->start_controls_tab( 'hover',
@@ -242,6 +241,7 @@ class Widget_Google_Maps extends Widget_Base {
 
 		$this->end_controls_tabs();
 
+		$this->end_controls_section();
 	}
 
 	/**

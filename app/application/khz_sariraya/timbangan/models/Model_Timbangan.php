@@ -19,10 +19,15 @@ class Model_Timbangan extends CI_Model {
 		return $this->db->insert($table,$data);
 	}
 	
-	function isi_timbangan($table,$data,$uniqid)
+	function isi_timbangan($table,$data,$pilihan,$uniqid)
 	{
 		
 		$this->db->where('uniqid_header', $uniqid);
+		if ($pilihan=='bruto') {
+            $this->db->set('waktu_masuk','now()',FALSE);
+        } else {
+            $this->db->set('waktu_keluar','now()',FALSE);
+        }
 		$this->db->update($table, $data);
 		
 	}
@@ -32,7 +37,8 @@ class Model_Timbangan extends CI_Model {
 /* Kontent */
 	 function json() {
         $this->datatables->select('uniqid_header as uniqid,concat(id_timbang,\' - \',no_plat) as id_timbang');
-        $this->datatables->from('timbangan_laporan_penimbangan');
+		$this->datatables->where('status', 0);
+		$this->datatables->from('timbangan_laporan_penimbangan');
         //add this line for join
         //$this->datatables->join('table2', 'Daftar_struk.field = table2.field');
         return $this->datatables->generate();

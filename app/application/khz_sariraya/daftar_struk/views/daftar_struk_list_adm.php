@@ -22,9 +22,9 @@ function goBack() {
                             <table class="table table-bordered table-striped" id="mytable">
                                 <thead>
                                     <tr>
-                                        <th class="text-center" width="80px">No</th>
+                                        <th class="text-center" width="20px">No</th>
                                         <th class="text-center">Id Bill</th>
-                                        <th class="text-center">Waktu Timbang</th>
+                                        <th class="text-center" width="100px">Waktu Timbang</th>
                                         <th class="text-center">Status</th>
                                         <th class="text-center" width="200px">Action</th>
                                     </tr>
@@ -90,13 +90,13 @@ function goBack() {
             var length = info.iLength;
             var index = page * length + (iDisplayIndex + 1);
             var status='<label class="label label-success">Sudah Bayar</label>'
-            var aksi='<a href="daftar_struk/read/'+data.uniqid+'"><button class="btn btn-primary"><i class="fa fa-print"></i> Cetak Struk</button></a>'
+            var aksi='<a href="daftar_struk/read/'+data.uniqid+'"><button class="btn btn-primary btn-sm"><i class="fa fa-print"></i> Cetak</button></a>'
                         
 
         if (data.status==0) {
-                            status='<label class="label label-warning">Pending</label>'
-                            var aksi=aksi+'<a onclick="javasciprt: return confirm(\'Are You Sure ?\')" href="daftar_struk/ubahstatus/'+data.uniqid+'/1">POSTING</a> || '
-                            var aksi=aksi+'<a onclick="javasciprt: return confirm(\'Are You Sure ?\')" href="daftar_struk/ubahstatus/'+data.uniqid+'/2">VOID</a> || '
+                            status='<div class="text-center"><label style="padding: 5px 15px; border-radius: 5px;" class="label label-warning">Pending</label></div>'
+                            var aksi=aksi+'<a onclick="javasciprt: return confirm(\'Are You Sure ?\')" href="daftar_struk/ubahstatus/'+data.uniqid+'/1">&nbsp;<button class="btn btn-success btn-sm"><i class="fa fa-chevron-right"></i> Posting</button>'
+                            var aksi=aksi+'<a onclick="javasciprt: return confirm(\'Are You Sure ?\')" href="daftar_struk/ubahstatus/'+data.uniqid+'/2">&nbsp;<button class="btn btn-danger btn-sm"><i class="fa fa-circle"></i> Void</button>'
                      
                      
                         }

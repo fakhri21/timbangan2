@@ -9,9 +9,11 @@
 	<style>
 	*{margin: 3px; padding: 0;}
 	body{font-family: 'calibri'; font-size: 13px; }
-	.page{width: 595px; height: 420px;  box-sizing: border-box;}
+	.page{width: 595px; height: 420px; padding-left: 25px;  box-sizing: border-box;}
 	
-	.head{padding: 10px 0px;}
+	.head{padding: 10px 0px; width: 70%; float: left;}
+  .ket{width: 30%; display: block; float: right; border: 2px solid rgb(100,200,90);}
+  .ket h2{text-align: center; color: rgb(100,200,90); }
 	.head h4{}
 	
 	.info-faktur{margin: 10px 0px;}
@@ -32,6 +34,16 @@
   <h4><?php echo  get_option( 'slogan_perusahaan' ) ?></h4>
   <p><?php echo  get_option( 'alamat_perusahaan' ) ?></p>
   </div><!-- /head -->
+  
+  <div class="ket">
+  <?php if ($print['status_timbang']==1) {
+	echo "<h2>Terverifikasi</h2>";
+} elseif ($print['status_timbang']==2) {
+	echo "<h2>Void</h2>";
+}
+?>
+  </div>
+  
   
   <div class="info-faktur">
   <table border="0">
@@ -131,15 +143,8 @@
 <br>
 <br>
 
-<div class="keterangan">
-<p>Keterangan</p>
 
-<?php if ($print['status_timbang']==1) {
-	echo "<h1>Terverifikasi</h1>";
-} elseif ($print['status_timbang']==2) {
-	echo "<h1>Void</h1>";
-}
-?>
+
 
 <table border="0">
 <tr>
@@ -153,17 +158,18 @@
 <td style="width: 100px;">&nbsp;</td>
 <td style="padding-top: 50px;">(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
 </tr>
+
+<tr>
+<td style="padding-top: 5px;"><p>Cetakan ke : <?php echo $print['status_print'] ?></p></td>
+</tr>
 </table>
 </div>
 
-<<<<<<< HEAD
-=======
 <br>
 <br>
-
->>>>>>> fb1f1cde5d7f1feeb7b6f259f1cdfcde14fa10e6
-Cetakan ke : <?php echo $print['status_print'] ?>
 </div><!-- page -->
+
+
  
 
 </body>

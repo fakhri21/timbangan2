@@ -7,16 +7,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 global $wp_version;
 
-$document = Plugin::$instance->documents->get( $this->_post_id );
+$document = Plugin::$instance->documents->get_current();
 
 $body_classes = [
 	'elementor-editor-active',
+	'elementor-editor-' . $document->get_template_type(),
 	'wp-version-' . str_replace( '.', '-', $wp_version ),
 ];
 
 if ( is_rtl() ) {
 	$body_classes[] = 'rtl';
 }
+
 if ( ! Plugin::$instance->role_manager->user_can( 'design' ) ) {
 	$body_classes[] = 'elementor-editor-content-only';
 }
@@ -34,14 +36,17 @@ if ( ! Plugin::$instance->role_manager->user_can( 'design' ) ) {
 </head>
 <body class="<?php echo implode( ' ', $body_classes ); ?>">
 <div id="elementor-editor-wrapper">
+	<div id="elementor-panel" class="elementor-panel"></div>
 	<div id="elementor-preview">
 		<div id="elementor-loading">
 			<div class="elementor-loader-wrapper">
 				<div class="elementor-loader">
-					<div class="elementor-loader-box"></div>
-					<div class="elementor-loader-box"></div>
-					<div class="elementor-loader-box"></div>
-					<div class="elementor-loader-box"></div>
+					<div class="elementor-loader-boxes">
+						<div class="elementor-loader-box"></div>
+						<div class="elementor-loader-box"></div>
+						<div class="elementor-loader-box"></div>
+						<div class="elementor-loader-box"></div>
+					</div>
 				</div>
 				<div class="elementor-loading-title"><?php echo __( 'Loading', 'elementor' ); ?></div>
 			</div>
@@ -55,7 +60,7 @@ if ( ! Plugin::$instance->role_manager->user_can( 'design' ) ) {
 			?>
 		</div>
 	</div>
-	<div id="elementor-panel" class="elementor-panel"></div>
+	<div id="elementor-navigator"></div>
 </div>
 <?php
 	wp_footer();

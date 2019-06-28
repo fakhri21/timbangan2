@@ -1,8 +1,18 @@
 {
-	"onDidClearBookmarkEmitter": {},
-	"onDidClearAllBookmarksEmitter": {},
-	"onDidAddBookmarkEmitter": {},
-	"onDidRemoveBookmarkEmitter": {},
-	"onDidUpdateBookmarkEmitter": {},
+	"onDidClearBookmarkEmitter": {
+		"_disposed": false
+	},
+	"onDidClearAllBookmarksEmitter": {
+		"_disposed": false
+	},
+	"onDidAddBookmarkEmitter": {
+		"_disposed": false
+	},
+	"onDidRemoveBookmarkEmitter": {
+		"_disposed": false
+	},
+	"onDidUpdateBookmarkEmitter": {
+		"_disposed": false
+	},
 	"bookmarks": []
 }

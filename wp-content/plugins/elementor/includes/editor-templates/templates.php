@@ -5,25 +5,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 ?>
-<script type="text/template" id="tmpl-elementor-templates-modal__header">
-	<div class="elementor-templates-modal__header__logo-area"></div>
-	<div class="elementor-templates-modal__header__menu-area"></div>
-	<div class="elementor-templates-modal__header__items-area">
-		<div class="elementor-templates-modal__header__close-modal elementor-templates-modal__header__item">
-			<i class="eicon-close" aria-hidden="true" title="<?php esc_attr_e( 'Close', 'elementor' ); ?>"></i>
-			<span class="elementor-screen-only"><?php echo __( 'Close', 'elementor' ); ?></span>
-		</div>
-		<div id="elementor-template-library-header-tools"></div>
-	</div>
-</script>
-
-<script type="text/template" id="tmpl-elementor-templates-modal__header__logo">
-	<span class="elementor-templates-modal__header__logo__icon-wrapper">
-		<i class="eicon-elementor"></i>
-	</span>
-	<span class="elementor-templates-modal__header__logo__title">{{{ title }}}</span>
-</script>
-
 <script type="text/template" id="tmpl-elementor-template-library-header-actions">
 	<div id="elementor-template-library-header-import" class="elementor-templates-modal__header__item">
 		<i class="eicon-upload-circle-o" aria-hidden="true" title="<?php esc_attr_e( 'Import Template', 'elementor' ); ?>"></i>
@@ -40,9 +21,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 </script>
 
 <script type="text/template" id="tmpl-elementor-template-library-header-menu">
-	<div id="elementor-template-library-menu-pre-made-blocks" class="elementor-template-library-menu-item" data-template-source="remote" data-template-type="block"><?php echo __( 'Blocks', 'elementor' ); ?></div>
-	<div id="elementor-template-library-menu-pre-made-pages" class="elementor-template-library-menu-item" data-template-source="remote" data-template-type="page"><?php echo __( 'Pages', 'elementor' ); ?></div>
-	<div id="elementor-template-library-menu-my-templates" class="elementor-template-library-menu-item" data-template-source="local"><?php echo __( 'My Templates', 'elementor' ); ?></div>
+	<# screens.forEach( ( screen ) => { #>
+		<div class="elementor-template-library-menu-item" data-template-source="{{{ screen.source }}}"{{{ screen.type ? ' data-template-type="' + screen.type + '"' : '' }}}>{{{ screen.title }}}</div>
+	<# } ); #>
 </script>
 
 <script type="text/template" id="tmpl-elementor-template-library-header-preview">
@@ -59,10 +40,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 <script type="text/template" id="tmpl-elementor-template-library-loading">
 	<div class="elementor-loader-wrapper">
 		<div class="elementor-loader">
-			<div class="elementor-loader-box"></div>
-			<div class="elementor-loader-box"></div>
-			<div class="elementor-loader-box"></div>
-			<div class="elementor-loader-box"></div>
+			<div class="elementor-loader-boxes">
+				<div class="elementor-loader-box"></div>
+				<div class="elementor-loader-box"></div>
+				<div class="elementor-loader-box"></div>
+				<div class="elementor-loader-box"></div>
+			</div>
 		</div>
 		<div class="elementor-loading-title"><?php echo __( 'Loading', 'elementor' ); ?></div>
 	</div>
@@ -86,18 +69,21 @@ if ( ! defined( 'ABSPATH' ) ) {
 						<input type="radio" id="elementor-template-library-order-popular" class="elementor-template-library-order-input" name="elementor-template-library-order" value="popularityIndex">
 						<label for="elementor-template-library-order-popular" class="elementor-template-library-order-label"><?php echo __( 'Popular', 'elementor' ); ?></label>
 					</div>
-				<# } else { #>
-					<div id="elementor-template-library-filter">
-						<select id="elementor-template-library-filter-subtype" class="elementor-template-library-filter-select" data-elementor-filter="subtype">
-							<option></option>
-							<# elementor.templates.getConfig( 'categories' ).forEach( function( category ) {
-								var selected = category === elementor.templates.getFilter( 'subtype' ) ? ' selected' : '';
-								#>
-								<option value="{{ category }}"{{{ selected }}}>{{{ category }}}</option>
-							<# } ); #>
-						</select>
-					</div>
-				<# } #>
+				<# } else {
+					var config = elementor.templates.getConfig( activeType );
+					if ( config.categories ) { #>
+						<div id="elementor-template-library-filter">
+							<select id="elementor-template-library-filter-subtype" class="elementor-template-library-filter-select" data-elementor-filter="subtype">
+								<option></option>
+								<# config.categories.forEach( function( category ) {
+									var selected = category === elementor.templates.getFilter( 'subtype' ) ? ' selected' : '';
+									#>
+									<option value="{{ category }}"{{{ selected }}}>{{{ category }}}</option>
+								<# } ); #>
+							</select>
+						</div>
+					<# }
+				} #>
 				<div id="elementor-template-library-my-favorites">
 					<# var checked = elementor.templates.getFilter( 'favorite' ) ? ' checked' : ''; #>
 					<input id="elementor-template-library-filter-my-favorites" type="checkbox"{{{ checked }}}>

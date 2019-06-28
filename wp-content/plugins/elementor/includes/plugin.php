@@ -1,16 +1,18 @@
 <?php
 namespace Elementor;
 
-use Elementor\Core\Ajax_Manager;
+use Elementor\Core\Admin\Admin;
+use Elementor\Core\Common\Modules\Ajax\Module as Ajax;
+use Elementor\Core\Common\App as CommonApp;
 use Elementor\Core\Debug\Inspector;
 use Elementor\Core\Documents_Manager;
 use Elementor\Core\Files\Manager as Files_Manager;
 use Elementor\Core\Modules_Manager;
-use Elementor\Debug\Debug;
 use Elementor\Core\Settings\Manager as Settings_Manager;
 use Elementor\Core\Settings\Page\Manager as Page_Settings_Manager;
 use Elementor\Modules\History\Revisions_Manager;
 use Elementor\Core\DynamicTags\Manager as Dynamic_Tags_Manager;
+use Elementor\Core\Logger\Manager as Log_Manager;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -57,9 +59,10 @@ class Plugin {
 	 * Holds the plugin ajax manager.
 	 *
 	 * @since 1.9.0
+	 * @deprecated 2.3.0 Use `Plugin::$instance->common->get_component( 'ajax' )` instead
 	 * @access public
 	 *
-	 * @var Ajax_Manager
+	 * @var Ajax
 	 */
 	public $ajax;
 
@@ -74,18 +77,6 @@ class Plugin {
 	 * @var Controls_Manager
 	 */
 	public $controls_manager;
-
-	/**
-	 * Debug.
-	 *
-	 * Holds the plugin debug.
-	 *
-	 * @since 1.0.0
-	 * @access public
-	 *
-	 * @var Debug
-	 */
-	public $debug;
 
 	/**
 	 * Documents manager.
@@ -388,6 +379,21 @@ class Plugin {
 	public $inspector;
 
 	/**
+	 * @var CommonApp
+	 */
+	public $common;
+
+	/**
+	 * @var Log_Manager
+	 */
+	public $logger;
+
+	/**
+	 * @var Core\Upgrade\Manager
+	 */
+	public $upgrade;
+
+	/**
 	 * Clone.
 	 *
 	 * Disable class cloning and throw an error on object clone.
@@ -470,6 +476,17 @@ class Plugin {
 	}
 
 	/**
+	 * @since 2.3.0
+	 * @access public
+	 */
+	public function on_rest_api_init() {
+		// On admin/frontend sometimes the rest API is initialized after the common is initialized.
+		if ( ! $this->common ) {
+			$this->init_common();
+		}
+	}
+
+	/**
 	 * Init components.
 	 *
 	 * Initialize Elementor components. Register actions, run setting manager,
@@ -483,9 +500,6 @@ class Plugin {
 		$this->inspector = new Inspector();
 		$this->debugger = $this->inspector;
 
-		// Allow all components to use AJAX.
-		$this->ajax = new Ajax_Manager();
-
 		Settings_Manager::run();
 
 		$this->db = new DB();
@@ -495,38 +509,52 @@ class Plugin {
 		$this->elements_manager = new Elements_Manager();
 		$this->widgets_manager = new Widgets_Manager();
 		$this->skins_manager = new Skins_Manager();
+		$this->files_manager = new Files_Manager();
 		/*
 		 * @TODO: Remove deprecated alias
 		 */
-		$this->files_manager = $this->posts_css_manager = new Files_Manager();
+		$this->posts_css_manager = $this->files_manager;
 		$this->settings = new Settings();
+		$this->tools = new Tools();
 		$this->editor = new Editor();
 		$this->preview = new Preview();
 		$this->frontend = new Frontend();
-		$this->debug = new Debug();
 		$this->templates_manager = new TemplateLibrary\Manager();
 		$this->maintenance_mode = new Maintenance_Mode();
 		$this->dynamic_tags = new Dynamic_Tags_Manager();
 		$this->modules_manager = new Modules_Manager();
 		$this->role_manager = new Core\RoleManager\Role_Manager();
+		$this->system_info = new System_Info\Main();
+		$this->revisions_manager = new Revisions_Manager();
 
-		Upgrades::add_actions();
+		User::init();
 		Api::init();
 		Tracker::init();
 
+		$this->upgrade = new Core\Upgrade\Manager();
+
 		if ( is_admin() ) {
-			$this->revisions_manager = new Revisions_Manager();
 			$this->heartbeat = new Heartbeat();
 			$this->wordpress_widgets_manager = new WordPress_Widgets_Manager();
-			$this->system_info = new System_Info\Main();
 			$this->admin = new Admin();
-			$this->tools = new Tools();
 			$this->beta_testers = new Beta_Testers();
 
 			if ( Utils::is_ajax() ) {
 				new Images_Manager();
 			}
 		}
+	}
+
+	/**
+	 * @since 2.3.0
+	 * @access public
+	 */
+	public function init_common() {
+		$this->common = new CommonApp();
+
+		$this->common->init_components();
+
+		$this->ajax = $this->common->get_component( 'ajax' );
 	}
 
 	/**
@@ -575,9 +603,13 @@ class Plugin {
 	private function __construct() {
 		$this->register_autoloader();
 
+		$this->logger = Log_Manager::instance();
+
+		Maintenance::init();
 		Compatibility::register_actions();
 
 		add_action( 'init', [ $this, 'init' ], 0 );
+		add_action( 'rest_api_init', [ $this, 'on_rest_api_init' ] );
 	}
 }
 

@@ -45,15 +45,10 @@
         Memuat 
         <i class='fa fa-circle-o-notch fa-spin' aria-hidden='true'></i>
     </div>
-    <div class="box box-primary">
+    <div class="box box-primary mt-5 mb-5">
         <div class="box-body">
             <nav>
-                <div class="scroller scroller-right">
-                    <i class="fa fa-chevron-right" aria-hidden="true"></i>
-                </div>
-                <div class="scroller scroller-left">
-                    <i class="fa fa-chevron-left" aria-hidden="true"></i>
-                </div>
+                
                 <div class="wrapper-tab">
                     <div class="nav nav-tabs list-tab" id="nav-tab" role="tablist">
                     

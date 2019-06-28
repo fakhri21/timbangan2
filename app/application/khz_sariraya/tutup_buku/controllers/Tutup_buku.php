@@ -25,7 +25,9 @@ class Tutup_buku extends CI_Controller
         if ($this->priode_hari) {
           $data['hari']=date_format(date_create($this->priode_hari),"d/m/Y");
         }
-        $this->template->load($this->nama_template,'tutup_buku',$data);
+        $this->load->view('kontent_tutup_buku', $data);
+        
+        //$this->template->load($this->nama_template,'tutup_buku',$data);
     }
     
     public function buka_timbangan()

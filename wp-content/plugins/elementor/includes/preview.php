@@ -65,6 +65,9 @@ class Preview {
 
 		add_action( 'wp_footer', [ $this, 'wp_footer' ] );
 
+		// Avoid Cloudflare's Rocket Loader lazy load the editor iframe
+		add_filter( 'script_loader_tag', [ $this, 'rocket_loader_filter' ], 10, 3 );
+
 		// Tell to WP Cache plugins do not cache this request.
 		Utils::do_not_cache();
 
@@ -138,15 +141,15 @@ class Preview {
 	 */
 	public function builder_wrapper( $content ) {
 		if ( get_the_ID() === $this->post_id ) {
-			$classes = 'elementor-edit-mode';
-
 			$document = Plugin::$instance->documents->get( $this->post_id );
 
-			if ( $document ) {
-				$classes .= ' ' . $document->get_container_classes();
-			}
+			$attributes = $document->get_container_attributes();
 
-			$content = '<div id="elementor" class="' . $classes . '"></div>';
+			$attributes['id'] = 'elementor';
+
+			$attributes['class'] .= ' elementor-edit-mode';
+
+			$content = '<div ' . Utils::render_html_attributes( $attributes ) . '></div>';
 		}
 
 		return $content;
@@ -221,7 +224,7 @@ class Preview {
 			'elementor-inline-editor',
 			ELEMENTOR_ASSETS_URL . 'lib/inline-editor/js/inline-editor' . $suffix . '.js',
 			[],
-			'',
+			ELEMENTOR_VERSION,
 			true
 		);
 
@@ -233,6 +236,10 @@ class Preview {
 		 * @since 1.5.4
 		 */
 		do_action( 'elementor/preview/enqueue_scripts' );
+	}
+
+	public function rocket_loader_filter( $tag, $handle, $src ) {
+		return str_replace( '<script', '<script data-cfasync="false"', $tag );
 	}
 
 	/**

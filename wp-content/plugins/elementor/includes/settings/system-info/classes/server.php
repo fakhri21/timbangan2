@@ -232,8 +232,10 @@ class Server_Reporter extends Base_Reporter {
 	public function get_mysql_version() {
 		global $wpdb;
 
+		$db_server_version = $wpdb->get_results( "SHOW VARIABLES WHERE `Variable_name` IN ( 'version_comment', 'innodb_version' )", OBJECT_K );
+
 		return [
-			'value' => $wpdb->db_version(),
+			'value' => $db_server_version['version_comment']->Value . ' v' . $db_server_version['innodb_version']->Value,
 		];
 	}
 
@@ -315,7 +317,7 @@ class Server_Reporter extends Base_Reporter {
 	 * }
 	 */
 	public function get_elementor_library() {
-		$response = wp_remote_post(
+		$response = wp_remote_get(
 			Api::$api_info_url, [
 				'timeout' => 5,
 				'body' => [

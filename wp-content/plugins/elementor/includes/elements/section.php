@@ -215,7 +215,7 @@ class Element_Section extends Element_Base {
 	protected static function get_default_edit_tools() {
 		$section_label = __( 'Section', 'elementor' );
 
-		return [
+		$edit_tools = [
 			'add' => [
 				/* translators: %s: Section label */
 				'title' => sprintf( __( 'Add %s', 'elementor' ), $section_label ),
@@ -226,12 +226,27 @@ class Element_Section extends Element_Base {
 				'title' => sprintf( __( 'Edit %s', 'elementor' ), $section_label ),
 				'icon' => 'handle',
 			],
+		];
+
+		if ( self::is_edit_buttons_enabled() ) {
+			$edit_tools += [
+				'duplicate' => [
+					/* translators: %s: Section label */
+					'title' => sprintf( __( 'Duplicate %s', 'elementor' ), $section_label ),
+					'icon' => 'clone',
+				],
+			];
+		}
+
+		$edit_tools += [
 			'remove' => [
 				/* translators: %s: Section label */
 				'title' => sprintf( __( 'Delete %s', 'elementor' ), $section_label ),
 				'icon' => 'close',
 			],
 		];
+
+		return $edit_tools;
 	}
 
 	/**
@@ -252,6 +267,8 @@ class Element_Section extends Element_Base {
 		$config = parent::_get_initial_config();
 
 		$config['presets'] = self::get_presets();
+		$config['controls'] = $this->get_controls();
+		$config['tabs_controls'] = $this->get_tabs_controls();
 
 		return $config;
 	}
@@ -271,6 +288,15 @@ class Element_Section extends Element_Base {
 			[
 				'label' => __( 'Layout', 'elementor' ),
 				'tab' => Controls_Manager::TAB_LAYOUT,
+			]
+		);
+
+		$this->add_control(
+			'_title',
+			[
+				'label' => __( 'Title', 'elementor' ),
+				'type' => Controls_Manager::HIDDEN,
+				'render_type' => 'none',
 			]
 		);
 
@@ -375,10 +401,15 @@ class Element_Section extends Element_Base {
 						'min' => 0,
 						'max' => 100,
 					],
+					'vw' => [
+						'min' => 0,
+						'max' => 100,
+					],
 				],
-				'size_units' => [ 'px', 'vh' ],
+				'size_units' => [ 'px', 'vh', 'vw' ],
 				'selectors' => [
 					'{{WRAPPER}} > .elementor-container' => 'min-height: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} > .elementor-container:after' => 'content: ""; min-height: inherit;', // Hack for IE11
 				],
 				'condition' => [
 					'height' => [ 'min-height' ],
@@ -458,6 +489,22 @@ class Element_Section extends Element_Base {
 					'bottom' => __( 'Bottom', 'elementor' ),
 				],
 				'prefix_class' => 'elementor-section-content-',
+			]
+		);
+
+		$this->add_control(
+			'overflow',
+			[
+				'label' => __( 'Overflow', 'elementor' ),
+				'type' => Controls_Manager::SELECT,
+				'default' => '',
+				'options' => [
+					'' => __( 'Default', 'elementor' ),
+					'hidden' => __( 'Hidden', 'elementor' ),
+				],
+				'selectors' => [
+					'{{WRAPPER}}' => 'overflow: {{VALUE}}',
+				],
 			]
 		);
 
@@ -761,7 +808,7 @@ class Element_Section extends Element_Base {
 			]
 		);
 
-		$this->add_control(
+		$this->add_responsive_control(
 			'border_radius',
 			[
 				'label' => __( 'Border Radius', 'elementor' ),
@@ -797,7 +844,7 @@ class Element_Section extends Element_Base {
 			]
 		);
 
-		$this->add_control(
+		$this->add_responsive_control(
 			'border_radius_hover',
 			[
 				'label' => __( 'Border Radius', 'elementor' ),
@@ -839,7 +886,8 @@ class Element_Section extends Element_Base {
 							'name' => 'background_background',
 							'operator' => '!==',
 							'value' => '',
-						], [
+						],
+						[
 							'name' => 'border_border',
 							'operator' => '!==',
 							'value' => '',
@@ -1162,13 +1210,50 @@ class Element_Section extends Element_Base {
 		);
 
 		$this->add_control(
+			'_element_id',
+			[
+				'label' => __( 'CSS ID', 'elementor' ),
+				'type' => Controls_Manager::TEXT,
+				'default' => '',
+				'dynamic' => [
+					'active' => true,
+				],
+				'title' => __( 'Add your custom id WITHOUT the Pound key. e.g: my-id', 'elementor' ),
+				'label_block' => false,
+				'style_transfer' => false,
+			]
+		);
+
+		$this->add_control(
+			'css_classes',
+			[
+				'label' => __( 'CSS Classes', 'elementor' ),
+				'type' => Controls_Manager::TEXT,
+				'default' => '',
+				'dynamic' => [
+					'active' => true,
+				],
+				'prefix_class' => '',
+				'title' => __( 'Add your custom class WITHOUT the dot. e.g: my-class', 'elementor' ),
+				'label_block' => false,
+			]
+		);
+
+		$this->end_controls_section();
+
+		$this->start_controls_section(
+			'section_effects',
+			[
+				'label' => __( 'Motion Effects', 'elementor' ),
+				'tab' => Controls_Manager::TAB_ADVANCED,
+			]
+		);
+
+		$this->add_responsive_control(
 			'animation',
 			[
 				'label' => __( 'Entrance Animation', 'elementor' ),
 				'type' => Controls_Manager::ANIMATION,
-				'default' => '',
-				'prefix_class' => 'animated ',
-				'label_block' => false,
 				'frontend_available' => true,
 			]
 		);
@@ -1207,29 +1292,6 @@ class Element_Section extends Element_Base {
 			]
 		);
 
-		$this->add_control(
-			'_element_id',
-			[
-				'label' => __( 'CSS ID', 'elementor' ),
-				'type' => Controls_Manager::TEXT,
-				'default' => '',
-				'title' => __( 'Add your custom id WITHOUT the Pound key. e.g: my-id', 'elementor' ),
-				'label_block' => false,
-			]
-		);
-
-		$this->add_control(
-			'css_classes',
-			[
-				'label' => __( 'CSS Classes', 'elementor' ),
-				'type' => Controls_Manager::TEXT,
-				'default' => '',
-				'prefix_class' => '',
-				'title' => __( 'Add your custom class WITHOUT the dot. e.g: my-class', 'elementor' ),
-				'label_block' => false,
-			]
-		);
-
 		$this->end_controls_section();
 
 		// Section Responsive
@@ -1242,14 +1304,24 @@ class Element_Section extends Element_Base {
 		);
 
 		$this->add_control(
+			'reverse_order_tablet',
+			[
+				'label' => __( 'Reverse Columns', 'elementor' ) . ' (' . __( 'Tablet', 'elementor' ) . ')',
+				'type' => Controls_Manager::SWITCHER,
+				'default' => '',
+				'prefix_class' => 'elementor-',
+				'return_value' => 'reverse-tablet',
+			]
+		);
+
+		$this->add_control(
 			'reverse_order_mobile',
 			[
-				'label' => __( 'Reverse Columns', 'elementor' ),
+				'label' => __( 'Reverse Columns', 'elementor' ) . ' (' . __( 'Mobile', 'elementor' ) . ')',
 				'type' => Controls_Manager::SWITCHER,
 				'default' => '',
 				'prefix_class' => 'elementor-',
 				'return_value' => 'reverse-mobile',
-				'description' => __( 'Reverse column order - When on mobile, the column order is reversed, so the last column appears on top and vice versa.', 'elementor' ),
 			]
 		);
 
@@ -1357,7 +1429,7 @@ class Element_Section extends Element_Base {
 		<# if ( settings.background_video_link ) { #>
 			<div class="elementor-background-video-container elementor-hidden-phone">
 				<div class="elementor-background-video-embed"></div>
-				<video class="elementor-background-video-hosted" autoplay loop muted></video>
+				<video class="elementor-background-video-hosted elementor-html5-video" autoplay loop muted></video>
 			</div>
 		<# } #>
 		<div class="elementor-background-overlay"></div>
@@ -1394,7 +1466,7 @@ class Element_Section extends Element_Base {
 							<video class="elementor-background-video-hosted elementor-html5-video" autoplay loop muted></video>
 						<?php endif; ?>
 					</div>
-				<?php
+					<?php
 				endif;
 			endif;
 
@@ -1402,9 +1474,9 @@ class Element_Section extends Element_Base {
 									  in_array( $settings['background_overlay_hover_background'], [ 'classic', 'gradient' ], true );
 
 			if ( $has_background_overlay ) :
-			?>
+				?>
 				<div class="elementor-background-overlay"></div>
-			<?php
+				<?php
 			endif;
 
 			if ( $settings['shape_divider_top'] ) {
@@ -1455,8 +1527,6 @@ class Element_Section extends Element_Base {
 				'elementor-' . $section_type . '-section',
 			]
 		);
-
-		$this->add_render_attribute( '_wrapper', 'data-element_type', $this->get_name() );
 	}
 
 	/**

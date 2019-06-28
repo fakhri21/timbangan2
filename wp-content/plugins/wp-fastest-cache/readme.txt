@@ -1,10 +1,10 @@
 === WP Fastest Cache ===
 Contributors: emrevona
 Donate link: http://profiles.wordpress.org/emrevona/
-Tags: cache, performance, wp-cache, total cache, super cache
+Tags: cache, caching, performance, wp-cache, total cache, super cache, cdn
 Requires at least: 3.3
-Tested up to: 4.9
-Stable tag: 0.8.8.5
+Tested up to: 5.2
+Stable tag: 0.8.9.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -25,7 +25,7 @@ Cache system generates a static html file and saves. Other users reach to static
 Setup of this plugin is so easy. You don't need to modify the .htacces file. It will be modified automatically.
 
 <h4>Multisite Support</h4>
-Wpfc does not support Wordpress Multisite yet.
+Wpfc supports Wordpress Multisite [<a target="_blank" href="https://www.wpfastestcache.com/blog/multi-site/">Details</a>]
 
 <h4>Features</h4>
 
@@ -102,6 +102,80 @@ Wpfc does not support Wordpress Multisite yet.
 18. Database Cleanup
 
 == Changelog ==
+
+= 0.8.9.4 =
+* to clear cache of parent categories after clearing category cache [<a target="_blank" href="https://wordpress.org/support/topic/cache-of-mother-categories-not-auto-deleting/">Details</a>]
+* to fix PHP Notice:  Undefined variable: preg_match_rule in preload.php on line 418
+* to show cloudflare integration warning if it has not been added
+* to fix Preload visiting page urls without end slashes problem [<a target="_blank" href="https://wordpress.org/support/topic/preload-visiting-page-urls-without-end-slashes/">Details</a>]
+* <strong>[FEATURE]</strong> to add Buffer Callback Filter [<a target="_blank" href="https://www.wpfastestcache.com/tutorial/buffer-callback-filter/">Details</a>]
+* to add application/x-font-opentype and application/x-font-truetype for browser caching
+* <strong>[FEATURE]</strong> Widget Cache is compatible with WPML Multilingual Plugin
+* to fix 403 forbidden error when the cdn-url is checking
+
+= 0.8.9.3 =
+* to exclude urls on preload
+* to add exclude rule for admin cookie as default
+* to prevent replace urls with cdn-url if the url has already been replaced with Jetpack
+* to fix replacing origin-url with cdn-url for data-product_variations attribute
+* to fix "Database Syntax Error" [<a target="_blank" href="https://wordpress.org/support/topic/database-syntax-error-2/">Details</a>]
+* refactoring of read_file()
+
+= 0.8.9.2 =
+* to clear cache of author page after update/insert post
+* to fix PHP Notice: Undefined offset: -1 in  wp-fastest-cache/inc/js-utilities.php  on line 47.
+* to fix PHP Fatal error: Function name must be a string in /public_html/wp-content/plugins/wp-fastest-cache/inc/preload.php on line 316
+* to support MultiSite (Beta) [<a target="_blank" href="https://www.wpfastestcache.com/blog/multi-site/">Details</a>]
+* to enable gzip for x-font/ttf
+* to prevent replace urls with cdn-url if the url has already been replaced with cdn.shortpixel.ai
+
+
+= 0.8.9.1 =
+* to disable webp image extension if cloudflare subscription is free
+* to fix cache deletion security issue of WP-PostRatings (CVE-2019-6726 by Sebastian Neef)
+* to add do_action("wpfc_is_cacheable_action") the plugins to be able to detect that a page has been cached or not
+* <strong>[FEATURE]</strong> exclude woocommerce_items_in_cart cookie [<a target="_blank" href="https://www.wpfastestcache.com/tutorial/woocommerce-settings/#cart-widget">Details</a>]
+
+= 0.8.9.0 =
+* to replace lazy load blank.gif with cdn-url
+* to exclude wishlist url of YITH WooCommerce Wishlist
+* refactoring of is_amp()
+* to add webm extension for cdn
+* refactoring of current_url()
+
+= 0.8.8.9 =
+* to fix url with replacing cdn-url on data-product_variations attribute
+* to increase browser cache time from 3 months to 4 months
+* to fix bug on language dropdown [<a target="_blank" href="https://wordpress.org/support/topic/bug-with-language-setting/">Details</a>]
+* to increase the value of Cloudflare Browser Cache Expiration to 6 months
+* to exclude Twitterbot user-agent
+* to fix PHP Warning: file_exists(): open_basedir restriction in effect
+
+= 0.8.8.8 =
+* to move "cache timeout" to under "delete cache" tab [<a target="_blank" href="https://www.wpfastestcache.com/features/cache-timeout-page/">Details</a>]
+* to prevent clearing cache after Ninja Form is submitted
+* <strong>[FEATURE]</strong> Preload for custom post types
+* to fix PHP Fatal error: Call to undefined function add_settings_error()
+
+= 0.8.8.7 =
+* to fix error which is Undefined index: SERVER_PORT
+* to prevent running preload when cache is disabled
+* to change saving options and notice system
+* to replace image urls of woocommerce variable with cdn-url
+* to fix url() problem for data:font/opentype
+* to add add_action('wp') for detection current page type
+* to support non-latin characters for clearing category cache
+* to show cache if the url contains “fbclid” (Facebook Click Identifier)
+* to show cache if the url contains “gclid” (Google Click Identifier)
+
+= 0.8.8.6 =
+* to show single clear cache button for the pages
+* to show warning if wp cron is disabled when a cache timeout rule is added
+* to disabe lazy load for the amp pages
+* to replace urls on data-cvpsrc and data-cvpset attribute with cdn-url
+* to clear the cache of a post which includes /%postname%/%post_id% permalink after the post is deleted
+* to fix vulnerability
+* to add "event" and "artist" custom post types for preload
 
 = 0.8.8.5 =
 * to fix pre tag problem after minify html
@@ -820,7 +894,7 @@ Yes, it is compatible with WP-PostRatings.
 No, it is NOT compatible with AdRotate.
 
 = Is this plugin compatible with WP Hide & Security Enhancer? =
-No, it is NOT compatible with WP Hide & Security Enhancer.
+Yes, it is compatible with WP Hide & Security Enhancer.
 
 = Is this plugin compatible with WP-PostViews? =
 Yes, it is compatible with WP-PostViews. The current post views appear on the admin panel. The visitors cannot see the current post views. The developer of WP-PostViews needs to fix this issue.

@@ -143,26 +143,7 @@ public function __construct() {
                                     );
 
                 $this->Model_Timbangan->detailpenimbangan('timbangan_detail_penimbangan',$insert,$uniqid); 
- 
 
-                    $masuk_piutang=$_POST['hutang'];
-                
-
-                /* if ($masuk_piutang==1) {
-                    $coa_piutang=$this->Model_Timbangan->cek_coa_piutang($insert['id_customer']);
-                    $coa_pendapatan=get_option('id_coa_pendapatan');
-                    $keterangan='Hutang '. ' untuk '.$insert['total_bersih'].' kg.'.'Sebesar'.number_format($insert['jumlah']);
-                    $data_kirim['data_piutang']=array(
-                                        'id_coa_pendapatan' =>$coa_pendapatan ,
-                                        'nilai'=>$insert['jumlah'],
-                                        'id_coa_piutang'=>$coa_piutang,
-                                        'keterangan'=>$keterangan);
-
-                    piutang_timbangan($data_kirim);
-                } */
-
-                //echo base_url('daftar_struk/read/'.$uniqid);
-            
  
         }
             $pilihan=$data['status_timbang'];
@@ -185,43 +166,9 @@ public function __construct() {
         $data['total_bersih']   =$data['netto']-$data['nilai_potongan'];
         $data['jumlah']         =$data['total_bersih']*$cek_data['nilai_persatuan'];
         
-        if ($pilihan='bruto') {
-            $data['waktu_masuk']=date("Y-m-d H:i:s");
-        } else {
-            $data['waktu_keluar']=date("Y-m-d H:i:s");
-        }
-        
-        $this->Model_Timbangan->isi_timbangan('timbangan_detail_penimbangan',$data,$uniqid);
+        $this->Model_Timbangan->isi_timbangan('timbangan_detail_penimbangan',$data,$pilihan,$uniqid);
         return "Berhasil menimbang ".$pilihan;
     }
-
-    function piutang_timbangan($data_piutang=NULL)
-    {
-        
-        $data['header']=array(  'eod' =>get_option('buka_timbangan') ,
-                                'status'=>1,
-                                'user_pembuat'=>$this->id_penimbang,
-                                'id_tipe_voucher'=>'PD' 
-                                );
-
-        $data['kredit']=array(  'id_coa' =>$data_piutang['id_coa_pendapatan'] ,
-                                'kredit'=>$data_piutang['nilai'],
-                                'keterangan'=>$data_piutang['keterangan'] );
-
-        $data['debit']=array(   'id_coa' =>$data_piutang['id_coa_piutang'] ,
-                                'debit'=>$data_piutang['nilai'],
-                                'keterangan'=>$data_piutang['keterangan'] );
-
-        $alamat_api=base_url('akuntansi/jurnalumum/simpan_api');
-
-        $result=$this->curl->simple_post($alamat_api,$data);
-        echo "<pre>";
-        print_r( $data);
-        echo $alamat_api;
-        print_r(json_decode($result));
-        echo "</pre>";
-    }
-
 }
 
 /* End of file Controllername.php */
