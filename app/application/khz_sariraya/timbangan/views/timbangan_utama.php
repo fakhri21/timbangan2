@@ -257,7 +257,7 @@
 
 
     function masuk_timbangan() {
-        var kondisi = $("#status").val()
+        var kondisi = $("#status:checked").val()
         var data = {
             'uniqid': uniqid,
             'kendaraan': $("#m_kendaraan").val(),
@@ -273,7 +273,7 @@
         if (kondisi == 0) {
             data.customer = $("#m_customer").val()
         } else {
-            data.customer = $("#m_supplier").val()
+            data.supplier = $("#m_supplier").val()
         }
 
         alertify.confirm("Apakah anda yakin ?", function(e) {
