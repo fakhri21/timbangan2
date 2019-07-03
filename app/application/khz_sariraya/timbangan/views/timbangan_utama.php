@@ -143,6 +143,29 @@
                             <input id="nilai" oninput="" placeholder="IDR" class="form-control angka">
                         </div>
                     </div>
+                    
+                    <div class="col">
+                        <div class="form-group">
+                            <label>Ongkos Mobil</label>
+                            <input id="o_mobil" oninput="" placeholder="IDR" class="form-control angka">
+                        </div>
+                    </div>
+                    
+                    <div class="col">
+                        <div class="form-group">
+                            <label>Ongkos Panen</label>
+                            <input id="o_panen" oninput="" placeholder="IDR" class="form-control angka">
+                        </div>
+                    </div>
+                    
+                    <div class="col">
+                        <div class="form-group">
+                            <label>Cicilan</label>
+                            <input id="cicilan_piutang" oninput="" placeholder="IDR" class="form-control angka">
+                        </div>
+                    </div>
+
+
                 </div>
                 <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="form-group">
@@ -267,6 +290,9 @@
             'massa': numeral($('#massa').val()).value(),
             'persen_potongan': numeral($('#persen_potongan').val()).value(),
             'nilai': numeral($('#nilai').val()).value(),
+            'o_mobil': numeral($('#o_mobil').val()).value(),
+            'o_panen': numeral($('#o_panen').val()).value(),
+            'cicilan_piutang': numeral($('#cicilan_piutang').val()).value(),
 
         }
 

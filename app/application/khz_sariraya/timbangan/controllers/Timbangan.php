@@ -125,6 +125,9 @@ public function __construct() {
             $data['supplier']=$this->input->post('supplier');
             $data['product']=$this->input->post('product');
             $data['persen_potongan']=$this->input->post('persen_potongan');
+            $data['o_mobil']=$this->input->post('o_mobil');
+            $data['o_panen']=$this->input->post('o_panen');
+            $data['cicilan_piutang']=$this->input->post('cicilan_piutang');
             $data['nilai']=$this->input->post('nilai');
             $data['supir']=$this->input->post('supir');
         
@@ -138,6 +141,9 @@ public function __construct() {
                                     'id_customer' =>$data['customer'],
                                     'id_supplier' =>$data['supplier'],
                                     'persen_potongan' =>$data['persen_potongan'],
+                                    'o_mobil' =>$data['o_mobil'],
+                                    'o_panen' =>$data['o_panen'],
+                                    'cicilan_piutang' =>$data['cicilan_piutang'],
                                     'nilai_persatuan'=>$data['nilai'],
                                     'supir'=>$data['supir']
                                     );
@@ -165,10 +171,12 @@ public function __construct() {
         $data['nilai_potongan'] =$data['netto']*$cek_data['persen_potongan']/100 ;
         $data['total_bersih']   =$data['netto']-$data['nilai_potongan'];
         $data['jumlah']         =$data['total_bersih']*$cek_data['nilai_persatuan'];
+        $data['grand_total']    =$data['jumlah']-$cek_data['o_mobil']-$cek_data['o_panen']-$cek_data['cicilan_piutang'];
         
         $this->Model_Timbangan->isi_timbangan('timbangan_detail_penimbangan',$data,$pilihan,$uniqid);
         return "Berhasil menimbang ".$pilihan;
     }
+
 }
 
 /* End of file Controllername.php */

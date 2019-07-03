@@ -24,7 +24,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 $config['base_url'] = "http://".$_SERVER['HTTP_HOST'].str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT_NAME']);
-
+$config['composer_autoload'] = FCPATH.'vendor/autoload.php';
 $config['modules_locations'] = array(
         APPPATH.'khz_sariraya/' => '../khz_sariraya/',
     );

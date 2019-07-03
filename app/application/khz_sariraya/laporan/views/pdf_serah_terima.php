@@ -2,9 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <style type="text/css">
-    body{background: #ddd; }    
     .box{
-        width: 400px;
         padding: 20px 30px; background: #fff;
         margin: 20px 0px;
     }

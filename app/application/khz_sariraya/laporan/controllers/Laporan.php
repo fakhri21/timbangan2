@@ -29,6 +29,10 @@ class Laporan extends CI_Controller
                                     'Nilai potongan'=>'nilai_potongan',
                                     'Total bersih'=>'total_bersih',
                                     'Jumlah'=>'jumlah',
+                                    'Ongkos Mobil'=>'o_mobil',
+                                    'Ongkos Panen'=>'o_panen',
+                                    'Ongkos Cicilan'=>'o_cicilan',
+                                    'Grand Total'=>'grand_total',
                                     );
        
     public function index()

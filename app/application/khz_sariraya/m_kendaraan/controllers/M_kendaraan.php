@@ -32,7 +32,7 @@ class M_kendaraan extends CI_Controller
 		'id_kendaraan' => $row->id_kendaraan,
 		'no_plat' => $row->no_plat,
 		'nama_kendaraan' => $row->nama_kendaraan,
-		'nilai_tarra' => $row->nilai_tarra,
+		//'nilai_tarra' => $row->nilai_tarra,
 	    );
             $this->template->load('template_admin','m_kendaraan/timbangan_m_kendaraan_read', $data);
         } else {
@@ -50,7 +50,7 @@ class M_kendaraan extends CI_Controller
 	    'id_kendaraan' => set_value('id_kendaraan'),
 	    'no_plat' => set_value('no_plat'),
 	    'nama_kendaraan' => set_value('nama_kendaraan'),
-	    'nilai_tarra' => set_value('nilai_tarra'),
+	    //'nilai_tarra' => set_value('nilai_tarra'),
 	);
         $this->template->load('template_admin','m_kendaraan/timbangan_m_kendaraan_form', $data);
     }
@@ -66,7 +66,8 @@ class M_kendaraan extends CI_Controller
 		'id_kendaraan' => $this->input->post('id_kendaraan',TRUE),
 		'no_plat' => $this->input->post('no_plat',TRUE),
 		'nama_kendaraan' => $this->input->post('nama_kendaraan',TRUE),
-		'nilai_tarra' => $this->input->post('nilai_tarra',TRUE));
+        //'nilai_tarra' => $this->input->post('nilai_tarra',TRUE)
+        );
 
             $this->Model_kendaraan->insert($data);
             $this->session->set_flashdata('message', 'Create Record Success');
@@ -86,7 +87,7 @@ class M_kendaraan extends CI_Controller
 		'id_kendaraan' => set_value('id_kendaraan', $row->id_kendaraan),
 		'no_plat' => set_value('no_plat', $row->no_plat),
 		'nama_kendaraan' => set_value('nama_kendaraan', $row->nama_kendaraan),
-		'nilai_tarra' => set_value('nilai_tarra', $row->nilai_tarra),
+		//'nilai_tarra' => set_value('nilai_tarra', $row->nilai_tarra),
 	    );
             $this->template->load('template_admin','m_kendaraan/timbangan_m_kendaraan_form', $data);
         } else {
@@ -106,7 +107,8 @@ class M_kendaraan extends CI_Controller
 		'id_kendaraan' => $this->input->post('id_kendaraan',TRUE),
 		'no_plat' => $this->input->post('no_plat',TRUE),
 		'nama_kendaraan' => $this->input->post('nama_kendaraan',TRUE),
-		'nilai_tarra' => $this->input->post('nilai_tarra',TRUE));
+        //'nilai_tarra' => $this->input->post('nilai_tarra',TRUE)
+    );
 
             $this->Model_kendaraan->update($this->input->post('uniqid', TRUE), $data);
             $this->session->set_flashdata('message', 'Update Record Success');

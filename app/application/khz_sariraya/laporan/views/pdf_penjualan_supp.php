@@ -24,6 +24,7 @@
 		background-color: #FFF;
 	}
   */
+
     table.table-style-two td {
         border-width: 1px;
         padding: 8px;
@@ -41,6 +42,16 @@
         <h1><?php echo get_option('nama_perusahaan') ?></h1>
         <h2><?php echo get_option('slogan_perusahaan') ?></h2>
         <p><?php echo get_option('alamat_perusahaan') ?></p>
+
+        <div class="ket">
+    <?php if ($record[0]['status']==1) {
+        echo "<h2>Terverifikasi</h2>";
+    } elseif ($record[0]['status']==2) {
+        echo "<h2>Void</h2>";
+    }
+    ?>
+</div>
+
             <div class="box">
                 <div class="panel-heading">
                     <h3>Laporan Penimbangan Supplier</h3>
@@ -53,7 +64,7 @@
                                             $grandtotal=0;
                                     
                                             foreach ($record as $recorddata) {
-                                                $grandtotal=$grandtotal+$recorddata['total_bersih'];
+                                                $grandtotal=$grandtotal+$recorddata['grand_total'];
                                             ?>
 
                     <tr>
@@ -71,7 +82,7 @@
                         <th rowspan=2>Potongan</th>
                         <th rowspan=2>Total Bersih</th>
                         <th rowspan=2>Harga / Kg</th>
-                        <th rowspan=2>Jumlah</th>
+                        <th rowspan=2>Total</th>
                     </tr>
                     <tr>
                         <th>Waktu Masuk</th>

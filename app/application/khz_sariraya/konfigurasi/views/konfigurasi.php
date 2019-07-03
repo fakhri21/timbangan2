@@ -67,7 +67,7 @@
                 <form method="post" enctype="multipart/form-data" action="<?php echo base_url(); ?>konfigurasi/aksi/coa_kas">
                     <label>Coa Kas</label>
                     <div class="input-group">
-                        <div style="width: 60%;"><?php echo cmb_dinamis('m_coa_kas','akuntansi_m_coa','nama_coa','uniqid','uniqid') ?></div>
+                        <div style="width: 60%;"><?php echo cmb_dinamis('value','akuntansi_m_coa','nama_coa','uniqid','uniqid') ?></div>
                         <div class="input-group-prepend">
                             <button class="btn btn-success"><i class="fa fa-edit"></i> Ubah data</button>
                         </div>
@@ -79,7 +79,7 @@
                 <form method="post" enctype="multipart/form-data" action="<?php echo base_url(); ?>konfigurasi/aksi/coa_pendapatan">
                     <label>Coa Pendapatan</label>
                     <div class="input-group">
-                        <div style="width: 60%;"><?php echo cmb_dinamis('m_coa_pendapatan','akuntansi_m_coa','nama_coa','uniqid','uniqid') ?></div>
+                        <div style="width: 60%;"><?php echo cmb_dinamis('value','akuntansi_m_coa','nama_coa','uniqid','uniqid') ?></div>
                         <div class="input-group-prepend">
                             <button class="btn btn-success"><i class="fa fa-edit"></i> Ubah data</button>
                         </div>
@@ -141,8 +141,8 @@
 <script>
     $(document).ready(function() {
 
-        $("#m_coa_kas").selectize();
-        $("#m_coa_pendapatan").selectize();
+        $("#value").selectize();
+        $("#value").selectize();
 
     })
 

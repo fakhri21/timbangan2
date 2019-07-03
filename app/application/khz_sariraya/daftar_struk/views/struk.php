@@ -105,9 +105,24 @@
 					<p>Berat Netto</p>
 					<p>Potongan</p>
 					<p>Total Bersih</p>
+					<div class="thead"></div>
+					<p>Harga / Kg : </p>
+					<p>Jumlah </p>
+					<p>Ongkos mobil :</p>
+					<p>Ongkos panen :</p>
+					<p>Cicilan </p>
+					<p>Grand Total </p>
 				
 				</td>
 				<td>
+					<p>:</p>
+					<p>:</p>
+					<p>:</p>
+					<p>:</p>
+					<p>:</p>
+					<div class="thead"></div>
+
+					<p>:</p>
 					<p>:</p>
 					<p>:</p>
 					<p>:</p>
@@ -120,6 +135,14 @@
 					<p><?php echo $print['netto']; ?></p>
 					<p><?php echo $print['nilai_potongan']; ?></p>
 					<p><?php echo $print['total_bersih']; ?></p>
+					<div class="thead"></div>
+					
+					<p>Rp <?php echo number_format($print['nilai_persatuan']); ?> </p>
+					<p>Rp <?php echo number_format($print['jumlah']); ?> </p>
+					<p>Rp <?php echo number_format($print['o_mobil']); ?> </p>
+					<p>Rp <?php echo number_format($print['o_panen']); ?> </p>
+					<p>Rp <?php echo number_format($print['cicilan']); ?> </p>
+					<p>Rp <?php echo number_format($print['grand_total']); ?> </p>
 				</td>
 				<td>
 				<p>Kg</p>
@@ -129,21 +152,12 @@
 				<p>Kg</p>
 				</td>
 			</tr>
-		<tr>
-			<td>
-			<p>Harga / Kg : Rp <?php echo number_format($print['nilai_persatuan']); ?></p>
-			<p>Grand Total : Rp <?php echo number_format($print['jumlah']); ?></p>
-			</td>
-		</tr>	
 
 		</thead>
 	</table>
   </div><!-- faktur -->
 
-<br>
-<br>
-
-
+  <div align="right"> <p>Cetakan ke : <?php echo $print['status_print'] ?></p></div>
 
 
 <table border="0">
@@ -154,19 +168,14 @@
 </tr>
 
 <tr>
-<td style="padding-top: 50px;">( <?php echo $print['nama_penimbang']?> )</td>
+<td style="padding-top: 20px;">( <?php echo $print['nama_penimbang']?> )</td>
 <td style="width: 100px;">&nbsp;</td>
-<td style="padding-top: 50px;">(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
+<td style="padding-top: 20px;">(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
 </tr>
 
-<tr>
-<td style="padding-top: 5px;"><p>Cetakan ke : <?php echo $print['status_print'] ?></p></td>
-</tr>
 </table>
 </div>
 
-<br>
-<br>
 </div><!-- page -->
 
 

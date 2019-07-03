@@ -49,7 +49,10 @@ class Model_Timbangan extends CI_Model {
 		$this->db->select('	bruto,
 							netto,
 							persen_potongan,
-							nilai_persatuan');
+							nilai_persatuan,
+							o_mobil,
+							o_panen,
+							cicilan_piutang');
 		$this->db->from('timbangan_laporan_penimbangan');
 		$this->db->where('uniqid_header', $uniqid);
 		$this->db->group_by('uniqid_header');
