@@ -1,0 +1,6 @@
+[submodule "monitor-timbangan"]
+	path = monitor-timbangan
+	url = https://github.com/zenproxx/serial-timbangan.git
+[submodule "monitor-timbangan_vue"]
+	path = monitor-timbangan_vue
+	url = https://github.com/Bensigo/VueJs-tips-Chrome-extension.git

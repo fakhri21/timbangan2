@@ -22,11 +22,11 @@ function goBack() {
                             <table class="table table-bordered table-striped" id="mytable">
                                 <thead>
                                     <tr>
-                                        <th width="80px">No</th>
+                                        <th>No</th>
                                         <th>Id Bill</th>
                                         <th>Waktu Timbang</th>
                                         <th>Status</th>
-                                        <th width="200px">Action</th>
+                                        <th width="300px">Action</th>
                                     </tr>
                                 </thead>
                             </table>
@@ -66,7 +66,22 @@ function goBack() {
             });
         },
         oLanguage: {
-            sProcessing: "loading..."
+            "sEmptyTable":   "Tidak ada data yang tersedia pada tabel ini",
+            "sProcessing":   "Sedang memproses...",
+            "sLengthMenu":   "Tampilkan _MENU_ entri",
+            "sZeroRecords":  "Tidak ditemukan data yang sesuai",
+            "sInfo":         "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
+            "sInfoEmpty":    "Menampilkan 0 sampai 0 dari 0 entri",
+            "sInfoFiltered": "(disaring dari _MAX_ entri keseluruhan)",
+            "sInfoPostFix":  "",
+            "sSearch":       "Cari:",
+            "sUrl":          "",
+            "oPaginate": {
+                "sFirst":    "Pertama",
+                "sPrevious": "Sebelumnya",
+                "sNext":     "Selanjutnya",
+                "sLast":     "Terakhir"
+
         },
         processing: true,
         serverSide: false,
@@ -90,19 +105,21 @@ function goBack() {
             var length = info.iLength;
             var index = page * length + (iDisplayIndex + 1);
             var status='<label class="label label-success">Sudah Bayar</label>'
-            var aksi='<a href="daftar_struk/read/'+data.uniqid+'">Print</a> || '
+            var aksi='<a href="daftar_struk/read/'+data.uniqid+'"><button class="btn btn-primary btn-sm"><i class="fa fa-print"></i> Cetak</button></a>'
+
                         
 
-        if (data.status==0) {
-                            status='<label class="label label-warning">Pending</label>'
+            if (data.status==0) {
+                            status='<div class="text-center"><label style="padding: 5px 15px; border-radius: 5px;" class="label label-warning">Menunggu</label></div>'
+                     
                      
                         }
                         else if(data.status==1){
-                            status='<label class="label label-primary">Terposting</label>'
+                            status='<div class="text-center"><label style="padding: 5px 15px; border-radius: 5px;" class="label label-success">Telah Disetujui</label></div>'
 
                         }
                         else{
-                            status='<label class="label label-danger">Void</label>'
+                            status='<div class="text-center"><label style="padding: 5px 15px; border-radius: 5px;" class="label label-danger">Dibatalkan</label></div>'
                         }
 
                         $('td:eq(0)', row).html(index);

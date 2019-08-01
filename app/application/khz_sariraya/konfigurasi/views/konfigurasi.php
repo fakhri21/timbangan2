@@ -55,6 +55,18 @@
                     </div>
                 </form>
             </div>
+            
+            <div class="form-group">
+                <form method="post" enctype="multipart/form-data" action="<?php echo base_url(); ?>konfigurasi/aksi/id_display">
+                    <label>Id Display</label>
+                    <div class="input-group">
+                       <input type="text" name="value" value="<?php echo get_option( 'id_display' ); ?>">
+                       <div class="input-group-prepend">
+                           <button class="btn btn-success"><i class="fa fa-edit"></i> Ubah data</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 

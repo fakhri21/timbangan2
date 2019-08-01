@@ -19,7 +19,7 @@
 
 <script>
 
-$("#nilai_angka").load("<?php echo base_url('timbangan/nilai_timbangan') ?>",function () {
+/* $("#nilai_angka").load("<?php echo base_url('timbangan/nilai_timbangan') ?>",function () {
       
     })
   
@@ -30,8 +30,31 @@ $("#nilai_angka").load("<?php echo base_url('timbangan/nilai_timbangan') ?>",fun
 
     
   }
+ */
+
+var angka_str=""
+var angka_timbangan=""
+var port=chrome.runtime.connect('<?php echo get_option('id_display') ?>')
+
+function refresh() {
+  port=chrome.runtime.connect('<?php echo get_option('id_display') ?>')
+  port.onMessage.addListener(
+    function(msg) {
+      angka_str=msg;
+      console.log(msg);
+      angka_timbangan=angka_str.substr(7,7)
+      $("#nilai_angka").html(parseFloat(angka_timbangan))
+          }
+  );
+      
+    }
+
+
   
   function ambil_angka() {
+    port=chrome.runtime.connect('<?php echo get_option('id_display') ?>')
+    port.postMessage("timbangan_selesai")
+
     $("#modal-angka-timbangan").modal('toggle')
     $("#massa").val($("#nilai_angka").text())
   }

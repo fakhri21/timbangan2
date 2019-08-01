@@ -26,7 +26,7 @@
         </div>
 	    <input type="hidden" name="uniqid" value="<?php echo $uniqid; ?>" /> 
 	    <button type="submit" class="btn btn-primary"><?php echo $button ?></button> 
-	    <a href="<?php echo base_url('m_customer') ?>" class="btn btn-default">Cancel</a>
+	    <a href="<?php echo base_url('m_customer') ?>" class="btn btn-default">Kembali</a>
 	</form>
 </div>
 

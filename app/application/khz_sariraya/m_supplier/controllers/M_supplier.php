@@ -36,7 +36,7 @@ class M_supplier extends CI_Controller
 	    );
             $this->template->load('template_admin','m_supplier/timbangan_m_supplier_read', $data);
         } else {
-            $this->session->set_flashdata('message', 'Record Not Found');
+            $this->session->set_flashdata('message', 'Data tidak ditemukan');
             redirect(base_url('m_supplier'));
         }
     }
@@ -44,7 +44,7 @@ class M_supplier extends CI_Controller
     public function create() 
     {
         $data = array(
-            'button' => '<i class="fa fa-save"></i> Simpan',
+            'button' => '<i class="fa fa-save"></i> Tambah',
             'action' => base_url('m_supplier/create_action'),
 	    'uniqid' => set_value('uniqid'),
 	    'nama' => set_value('nama'),
@@ -81,7 +81,7 @@ class M_supplier extends CI_Controller
 
         if ($row) {
             $data = array(
-                'button' => '<i class="fa fa-save"></i> Simpan',
+                'button' => '<i class="fa fa-save"></i> Ubah',
                 'action' => base_url('m_supplier/update_action'),
 		'uniqid' => set_value('uniqid', $row->uniqid),
 		'nama' => set_value('nama', $row->nama),
@@ -91,7 +91,7 @@ class M_supplier extends CI_Controller
 	    );
             $this->template->load('template_admin','m_supplier/timbangan_m_supplier_form', $data);
         } else {
-            $this->session->set_flashdata('message', 'Record Not Found');
+            $this->session->set_flashdata('message', 'Data tidak ditemukan');
             redirect(base_url('m_supplier'));
         }
     }
@@ -111,7 +111,7 @@ class M_supplier extends CI_Controller
 	    );
 
             $this->Model_supplier->update($this->input->post('uniqid', TRUE), $data);
-            $this->session->set_flashdata('message', 'Update Record Success');
+            $this->session->set_flashdata('message', 'Berhasil ubah data');
             redirect(base_url('m_supplier'));
         }
     }
@@ -125,7 +125,7 @@ class M_supplier extends CI_Controller
             $this->session->set_flashdata('message', 'Delete Record Success');
             redirect(base_url('m_supplier'));
         } else {
-            $this->session->set_flashdata('message', 'Record Not Found');
+            $this->session->set_flashdata('message', 'Data tidak ditemukan');
             redirect(base_url('m_supplier'));
         }
     }

@@ -22,11 +22,11 @@ function goBack() {
                             <table class="table table-bordered table-striped" id="mytable">
                                 <thead>
                                     <tr>
-                                        <th class="text-center" width="20px">No</th>
+                                        <th class="text-center" width="1px">No</th>
                                         <th class="text-center">Id Bill</th>
-                                        <th class="text-center" width="100px">Waktu Timbang</th>
+                                        <th class="text-center">Waktu Timbang</th>
                                         <th class="text-center">Status</th>
-                                        <th class="text-center" width="200px">Action</th>
+                                        <th class="text-center" width="300px">Action</th>
                                     </tr>
                                 </thead>
                             </table>
@@ -66,7 +66,22 @@ function goBack() {
             });
         },
         oLanguage: {
-            sProcessing: "loading..."
+            "sEmptyTable":   "Tidak ada data yang tersedia pada tabel ini",
+            "sProcessing":   "Sedang memproses...",
+            "sLengthMenu":   "Tampilkan _MENU_ entri",
+            "sZeroRecords":  "Tidak ditemukan data yang sesuai",
+            "sInfo":         "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
+            "sInfoEmpty":    "Menampilkan 0 sampai 0 dari 0 entri",
+            "sInfoFiltered": "(disaring dari _MAX_ entri keseluruhan)",
+            "sInfoPostFix":  "",
+            "sSearch":       "Cari:",
+            "sUrl":          "",
+            "oPaginate": {
+                "sFirst":    "Pertama",
+                "sPrevious": "Sebelumnya",
+                "sNext":     "Selanjutnya",
+                "sLast":     "Terakhir"
+    }
         },
         processing: true,
         serverSide: false,
@@ -94,18 +109,18 @@ function goBack() {
                         
 
         if (data.status==0) {
-                            status='<div class="text-center"><label style="padding: 5px 15px; border-radius: 5px;" class="label label-warning">Pending</label></div>'
-                            var aksi=aksi+'<a onclick="javasciprt: return confirm(\'Are You Sure ?\')" href="daftar_struk/ubahstatus/'+data.uniqid+'/1">&nbsp;<button class="btn btn-success btn-sm"><i class="fa fa-chevron-right"></i> Posting</button>'
-                            var aksi=aksi+'<a onclick="javasciprt: return confirm(\'Are You Sure ?\')" href="daftar_struk/ubahstatus/'+data.uniqid+'/2">&nbsp;<button class="btn btn-danger btn-sm"><i class="fa fa-circle"></i> Void</button>'
+                            status='<div class="text-center"><label style="padding: 5px 15px; border-radius: 5px;" class="label label-warning">Menunggu</label></div>'
+                            var aksi=aksi+'<a onclick="javasciprt: return confirm(\'Are You Sure ?\')" href="daftar_struk/ubahstatus/'+data.uniqid+'/1">&nbsp;<button class="btn btn-success btn-sm"><i class="fa fa-chevron-right"></i> Menyetujui</button>'
+                            var aksi=aksi+'<a onclick="javasciprt: return confirm(\'Are You Sure ?\')" href="daftar_struk/ubahstatus/'+data.uniqid+'/2">&nbsp;<button class="btn btn-danger btn-sm"><i class="fa fa-circle"></i> Membatalkan</button>'
                      
                      
                         }
                         else if(data.status==1){
-                            status='<div class="text-center"><label style="padding: 5px 15px; border-radius: 5px;" class="label label-success">Terposting</label></div>'
+                            status='<div class="text-center"><label style="padding: 5px 15px; border-radius: 5px;" class="label label-success">Telah Disetujui</label></div>'
 
                         }
                         else{
-                            status='<div class="text-center"><label style="padding: 5px 15px; border-radius: 5px;" class="label label-danger">Void</label></div>'
+                            status='<div class="text-center"><label style="padding: 5px 15px; border-radius: 5px;" class="label label-danger">Dibatalkan</label></div>'
                         }
 
                         $('td:eq(0)', row).html(index);

@@ -22,7 +22,6 @@ function get_nilai_timbangan($option)
         //the serial port resource
         $bbSerialPort;
         
-        
         if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') 
         { 
             $bbSerialPort = dio_open($portName, O_RDONLY );

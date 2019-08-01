@@ -44,7 +44,7 @@ class M_customer extends CI_Controller
     public function create() 
     {
         $data = array(
-            'button' => 'Create',
+            'button' => 'Tambah',
             'action' => base_url('m_customer/create_action'),
 	    'uniqid' => set_value('uniqid'),
 	    'nama' => set_value('nama'),
@@ -82,7 +82,7 @@ class M_customer extends CI_Controller
 
         if ($row) {
             $data = array(
-                'button' => 'Update',
+                'button' => 'Ubah',
                 'action' => base_url('m_customer/update_action'),
 		'uniqid' => set_value('uniqid', $row->uniqid),
 		'nama' => set_value('nama', $row->nama),

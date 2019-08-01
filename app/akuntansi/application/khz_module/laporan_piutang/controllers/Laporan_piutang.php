@@ -117,7 +117,7 @@ class Laporan_piutang extends CI_Controller {
         
         if (!$data['record']) {
                 $this->session->set_flashdata('message_failed', 'Data Tidak Ditemukan');
-                redirect(base_url('laporan_jurnal_buku_besar'),'refresh');
+                redirect(base_url('laporan_piutang'),'refresh');
                 
         }
             

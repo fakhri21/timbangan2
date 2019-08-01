@@ -44,7 +44,7 @@ class M_kendaraan extends CI_Controller
     public function create() 
     {
         $data = array(
-            'button' => 'Create',
+            'button' => 'Tambah',
             'action' => base_url('m_kendaraan/create_action'),
 	    'uniqid' => set_value('uniqid'),
 	    'id_kendaraan' => set_value('id_kendaraan'),
@@ -81,7 +81,7 @@ class M_kendaraan extends CI_Controller
 
         if ($row) {
             $data = array(
-                'button' => 'Update',
+                'button' => 'Ubah',
                 'action' => base_url('m_kendaraan/update_action'),
 		'uniqid' => set_value('uniqid', $row->uniqid),
 		'id_kendaraan' => set_value('id_kendaraan', $row->id_kendaraan),

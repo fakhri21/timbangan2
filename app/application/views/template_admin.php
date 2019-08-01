@@ -76,6 +76,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <script src="<?php echo base_url();?>assets/js/bootstrap-datepicker.js"></script>
   <script src="<?php echo base_url();?>assets/js/selectize.js" type="text/javascript"></script>
   <script src="<?php echo base_url();?>assets/js/d3.min.js" type="text/javascript"></script>
+  <script src="<?php echo base_url();?>assets/js/vue.min.js" type="text/javascript"></script>
   
 <div class="container">
     <div class="row">

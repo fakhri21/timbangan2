@@ -14,5 +14,12 @@
 	"onDidUpdateBookmarkEmitter": {
 		"_disposed": false
 	},
-	"bookmarks": []
+	"bookmarks": [
+		{
+			"fsPath": "$ROOTPATH$\\app\\application\\khz_sariraya\\timbangan\\views\\kontent\\modal_m_supplier.php",
+			"bookmarks": [
+				12
+			]
+		}
+	]
 }
