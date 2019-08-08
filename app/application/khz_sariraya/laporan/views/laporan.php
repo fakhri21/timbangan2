@@ -22,7 +22,7 @@ function goBack() {
                                 <div class="row">
                                     <div class="col-lg-12 col-md-12 col-xs-12">
                                         <div class="alert alert-info" role="alert"> <i class="fa fa-info-circle"></i>
-										<span class="font-weight-light">Laporan Timbang Berdasarkan Tanggal. Kosongkan tanggal apabila ingin melihat Timbang yang sedang berjalan.</span>
+										<span class="font-weight-light">Laporan Timbangan Berdasarkan Tanggal. Kosongkan tanggal apabila ingin melihat Timbangan yang sedang berjalan.</span>
 										</div>
                                     </div>
                                 </div>
@@ -94,8 +94,8 @@ function goBack() {
 								</div>
                        
                                 <div class="form-group text-center">
-                                    <button class="btn btn-success" onclick="submitform('excel')" ><i class="fa fa-file-excel-o"></i> Submit Excel</button>
-                                    <button class="btn btn-primary" onclick="submitform('pdf')" ><i class="fa fa-file-pdf-o"></i> Submit Pdf</button>
+                                    <button class="btn btn-success" onclick="submitform('excel')" ><i class="fa fa-file-excel-o"></i> Cetak ke Excel</button>
+                                    <button class="btn btn-primary" onclick="submitform('pdf')" ><i class="fa fa-file-pdf-o"></i> Cetak ke Pdf</button>
                                     <button class="btn btn-primary" onclick="submitform('pdf_serah_terima')" ><i class="fa fa-hand-paper-o fa-rotate-90"></i> Serah Terima</button>
                               </div>
                           </form>

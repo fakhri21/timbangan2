@@ -25,7 +25,7 @@ function goBack() {
                 </div>
                 <div class="col-md-4 text-right">
                     <?php echo anchor(base_url('m_supplier/create'), '<i class="fa fa-plus"></i> Tambah Data', 'class="btn btn-primary"'); ?>
-                    <?php echo anchor(base_url('m_supplier/excel'), '<i class="fa fa-file"></i> Ekspor ke Excel', 'class="btn btn-primary"'); ?>
+                    <?php echo anchor(base_url('m_supplier/excel'), '<i class="fa fa-file"></i> Cetak ke Excel', 'class="btn btn-primary"'); ?>
                 </div>
             </div>
 
@@ -35,7 +35,7 @@ function goBack() {
                     <th width="10px">No</th>
 		    <th>Nama</th>
 		    <th>Alamat</th>
-		    <th>No Handphone</th>
+		    <th>No HP</th>
 		    <th>Email</th>
 		    <th width="200px">Action</th>
                 </tr>
@@ -74,21 +74,21 @@ function goBack() {
                         });
                     },
                     oLanguage: {
-                        "sEmptyTable":   "Tidak ada data yang tersedia pada tabel ini",
-            "sProcessing":   "Sedang memproses...",
-            "sLengthMenu":   "Tampilkan _MENU_ entri",
-            "sZeroRecords":  "Tidak ditemukan data yang sesuai",
-            "sInfo":         "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
-            "sInfoEmpty":    "Menampilkan 0 sampai 0 dari 0 entri",
-            "sInfoFiltered": "(disaring dari _MAX_ entri keseluruhan)",
-            "sInfoPostFix":  "",
-            "sSearch":       "Cari:",
-            "sUrl":          "",
-            "oPaginate": {
-                "sFirst":    "Pertama",
-                "sPrevious": "Sebelumnya",
-                "sNext":     "Selanjutnya",
-                "sLast":     "Terakhir"
+                    "sEmptyTable":   "Tidak ada data yang tersedia pada tabel ini",
+                    "sProcessing":   "Sedang memproses...",
+                    "sLengthMenu":   "Tampilkan &nbsp; _MENU_ &nbsp; data",
+                    "sZeroRecords":  "Tidak ditemukan data yang sesuai",
+                    "sInfo":         "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+                    "sInfoEmpty":    "Menampilkan 0 sampai 0 dari 0 data",
+                    "sInfoFiltered": "(disaring dari _MAX_ data keseluruhan)",
+                    "sInfoPostFix":  "",
+                    "sSearch":       "Cari:",
+                    "sUrl":          "",
+                    "oPaginate": {
+                        "sFirst":    "Pertama",
+                        "sPrevious": "Sebelumnya",
+                        "sNext":     "Selanjutnya",
+                        "sLast":     "Terakhir"
 
                     }
                 },

@@ -53,8 +53,8 @@ if (!empty($this->session->flashdata('message_failed'))) {
 
                     </div>
                     <div class="form-group row">
-                        <div class="col-2">
-                            <label>Status</label>
+                        <div class="col-4">
+                            <label>Cetak ke</label>
                         </div>
                         <div class="col mx-auto">
                             <div class="custom-control custom-radio custom-control-inline">
@@ -69,7 +69,7 @@ if (!empty($this->session->flashdata('message_failed'))) {
                     </div>
                     <div class="form-group row">
                         <div class="col">
-                            <input type="submit" name="" value="Enter" class="btn-block btn btn-primary">
+                            <input type="submit" name="" value="Cetak Sekarang" class="btn-block btn btn-primary">
                         </div>
 
                     </div>
