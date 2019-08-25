@@ -1,134 +1,194 @@
 <?php 
-
 $string = "<!doctype html>
-<html>
-    <head>
-        <title>harviacode.com - codeigniter crud generator</title>
-        <link rel=\"stylesheet\" href=\"<?php echo base_url('assets/bootstrap/css/bootstrap.min.css') ?>\"/>
-        <link rel=\"stylesheet\" href=\"<?php echo base_url('assets/datatables/dataTables.bootstrap.css') ?>\"/>
-        <link rel=\"stylesheet\" href=\"<?php echo base_url('assets/datatables/dataTables.bootstrap.css') ?>\"/>
-        <style>
-            .dataTables_wrapper {
-                min-height: 500px
-            }
-            
-            .dataTables_processing {
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                width: 100%;
-                margin-left: -50%;
-                margin-top: -25px;
-                padding-top: 20px;
-                text-align: center;
-                font-size: 1.2em;
-                color:grey;
-            }
-            
-        </style>
-    </head>
-    <body>
-        <div class=\"row\" style=\"margin-bottom: 10px\">
-            <div class=\"col-md-4\">
-                <h2 style=\"margin-top:0px\">".ucfirst($table_name)." List</h2>
-            </div>
-            <div class=\"col-md-4 text-center\">
-                <div style=\"margin-top: 4px\"  id=\"message\">
-                    <?php echo \$this->session->userdata('message') <> '' ? \$this->session->userdata('message') : ''; ?>
-                </div>
-            </div>
-            <div class=\"col-md-4 text-right\">
-                <?php echo anchor(site_url('".$c_url."/create'), 'Create', 'class=\"btn btn-primary\"'); ?>";
-if ($export_excel == '1') {
-    $string .= "\n\t\t<?php echo anchor(site_url('".$c_url."/excel'), 'Excel', 'class=\"btn btn-primary\"'); ?>";
-}
-if ($export_word == '1') {
-    $string .= "\n\t\t<?php echo anchor(site_url('".$c_url."/word'), 'Word', 'class=\"btn btn-primary\"'); ?>";
-}
-if ($export_pdf == '1') {
-    $string .= "\n\t\t<?php echo anchor(site_url('".$c_url."/pdf'), 'PDF', 'class=\"btn btn-primary\"'); ?>";
-}
-$string .= "\n\t    </div>
+<div id=\"app\">
+    <!-- kontainer menu -->
+    <b-card>
+    <transition
+        name=\"custom-classes-transition\"
+        enter-active-class=\"animated slideInUp\"
+
+        >
+        <router-view></router-view>
+    </transition>
+    </b-card>
+<!-- /kontainer menu -->
+</div>
+<script>
+var base_url=\"<?php echo base_url() ?>\"
+</script>
+
+<script type=\"text/x-template\" id=\"home\">
+<div>
+<router-link :to=\"'tambah'\" style=\"text-decoration: none;\">
+    <b-button varian=\"primary\" size=\"sm\"  class=\"mr-1\">
+        <i class=\"fa fa-plus\" aria-hidden=\"true\"></i> Tambah Baru
+    </b-button>
+</router-link>
+    <b-form-input v-model=\"keyword\" placeholder=\"Pencarian\"></b-form-input>
+      <b-table
+        class=\"table table-striped table-inverse table-responsive\"
+        id=\"my-table\"
+        show-empty
+        :items=\"items\"
+        :filter=\"keyword\"
+        :fields=\"fields\"
+        :current-page=\"currentPage\"
+        :per-page=\"perPage\"
+        @filtered=\"onFiltered\"
+        
+        >
+        <div slot=\"actions\" slot-scope=\"row\">
+            <router-link :to=\"'ubah'\" style=\"text-decoration: none;\">
+                <b-button varian=\"success\" size=\"sm\" @click=\"update(row.item.".$pk.", row.item.qty, row.item.options.keterangan)\" class=\"mr-1\">
+                    <i class=\"fa fa-pencil\" aria-hidden=\"true\"></i> Ubah
+                </b-button>
+            </router-link>
+            <router-link :to=\"'lihat'\" style=\"text-decoration: none;\">
+                <b-button varian=\"warning\" size=\"sm\" @click=\"read(row.item.".$pk.")\" class=\"mr-1\">
+                    <i class=\"fa fa-eye\" aria-hidden=\"true\"></i> Lihat
+                </b-button>
+            </router-link>
+          <b-button varian=\"danger\" size=\"sm\" @click=\"deleteitem(row.item.rowid)\">
+            <i class=\"fa fa-trash\" aria-hidden=\"true\"></i> Hapus
+          </b-button>
         </div>
-        <table class=\"table table-bordered table-striped\" id=\"mytable\">
-            <thead>
-                <tr>
-                    <th width=\"80px\">No</th>";
-foreach ($non_pk as $row) {
-    $string .= "\n\t\t    <th>" . label($row['column_name']) . "</th>";
-}
-$string .= "\n\t\t    <th width=\"200px\">Action</th>
-                </tr>
-            </thead>";
+      </b-table>
+    <b-pagination
+        v-model=\"currentPage\"
+        :total-rows=\"rows\"
+        :per-page=\"perPage\"
+        class=\"my-0\"
+        aria-controls=\"my-table\"
+        >
+    </b-pagination>          
+</div>
+</script>";
 
 $column_non_pk = array();
 foreach ($non_pk as $row) {
-    $column_non_pk[] .= "{\"data\": \"".$row['column_name']."\"}";
+$column_non_pk[] .= "{ key: \"".$row['column_name']."\", label: \"".$row['column_name']."\", sortable: true }";
 }
-$col_non_pk = implode(',', $column_non_pk);
+$col_non_pk = implode(",\n", $column_non_pk);
+$string.="
 
-$string .= "\n\t    
-        </table>
-        <script src=\"<?php echo base_url('assets/js/jquery-1.11.2.min.js') ?>\"></script>
-        <script src=\"<?php echo base_url('assets/datatables/jquery.dataTables.js') ?>\"></script>
-        <script src=\"<?php echo base_url('assets/datatables/dataTables.bootstrap.js') ?>\"></script>
-        <script type=\"text/javascript\">
-            $(document).ready(function() {
-                $.fn.dataTableExt.oApi.fnPagingInfo = function(oSettings)
-                {
-                    return {
-                        \"iStart\": oSettings._iDisplayStart,
-                        \"iEnd\": oSettings.fnDisplayEnd(),
-                        \"iLength\": oSettings._iDisplayLength,
-                        \"iTotal\": oSettings.fnRecordsTotal(),
-                        \"iFilteredTotal\": oSettings.fnRecordsDisplay(),
-                        \"iPage\": Math.ceil(oSettings._iDisplayStart / oSettings._iDisplayLength),
-                        \"iTotalPages\": Math.ceil(oSettings.fnRecordsDisplay() / oSettings._iDisplayLength)
-                    };
-                };
+<script>
+Vue.component('menu-awal', {
+    template: '#home',
+    data: function() {
+        return {
+            rows: 1,
+            currentPage: 1,
+            perPage: 5,
+            pageOptions: [5, 10, 15],
+            keyword: \"\",
+            items: [],
+            fields: [
+                ".$col_non_pk.",
+                { key: \"actions\", label: \"Aksi\", sortable: true },
+                
+            ]
+        }
+    },
+    methods: {
+        onFiltered(filteredItems) {
+            this.rows = filteredItems.length
+            this.currentPage = 1
+          }
+    },
+    created: function () {
+        var _this = this;
+        $.getJSON(\"".$c_url."/json\", function (json) {
+            _this.items = json.data;
+            _this.rows = json.total_rows;
+        });
+    }
 
-                var t = $(\"#mytable\").dataTable({
-                    initComplete: function() {
-                        var api = this.api();
-                        $('#mytable_filter input')
-                                .off('.DT')
-                                .on('keyup.DT', function(e) {
-                                    if (e.keyCode == 13) {
-                                        api.search(this.value).draw();
-                            }
-                        });
-                    },
-                    oLanguage: {
-                        sProcessing: \"loading...\"
-                    },
-                    processing: true,
-                    serverSide: true,
-                    ajax: {\"url\": \"".$c_url."/json\", \"type\": \"POST\"},
-                    columns: [
-                        {
-                            \"data\": \"$pk\",
-                            \"orderable\": false
-                        },".$col_non_pk.",
-                        {
-                            \"data\" : \"action\",
-                            \"orderable\": false,
-                            \"className\" : \"text-center\"
-                        }
-                    ],
-                    order: [[0, 'desc']],
-                    rowCallback: function(row, data, iDisplayIndex) {
-                        var info = this.fnPagingInfo();
-                        var page = info.iPage;
-                        var length = info.iLength;
-                        var index = page * length + (iDisplayIndex + 1);
-                        $('td:eq(0)', row).html(index);
-                    }
-                });
-            });
-        </script>
-    </body>
-</html>";
+})
 
+<script type=\"text/x-template\" id=\"form\">
+<div>
+    <div class=\"mt-2 mb-2\">
+           <h3 class=\"text-center\">".ucfirst($table_name)."</h3>
+    </div>";
+foreach ($non_pk as $row) {
+    if ($row["data_type"] == 'text')
+    {
+    $string .= "\n\t    <b-form-group>
+            <label for=\"formform.".$row["column_name"]."\">".label($row["column_name"])." <?php echo form_error('form.".$row["column_name"]."') ?></label>
+            <b-form-textarea required v-model=\"form.".$row["column_name"]."\"  name=\"form.".$row["column_name"]."\" id=\"form.".$row["column_name"]."\" placeholder=\"".label($row["column_name"])."\"></b-form-textarea>
+            </b-form-group>";
+    } else
+    {
+    $string .= "\n\t    <b-form-group>
+            <label for=\"".$row["data_type"]."\">".label($row["column_name"])." <?php echo form_error('form.".$row["column_name"]."') ?></label>
+            <b-form-input required v-model=\"form.".$row["column_name"]."\"  type=\"text\" class=\"form-control\" name=\"form.".$row["column_name"]."\" id=\"form.".$row["column_name"]."\" placeholder=\"".label($row["column_name"])."\"  />
+            </b-form-group>";
+    }
+}
+$string .= "\n\t    <button @click=\"simpan\" class=\"btn btn-primary\"><i class=\"fa fa-save\"></i> <?php echo \$button ?></button> 
+
+</div>
+</script>
+
+Vue.component('form', {
+    template: '#form',
+    data: function() {
+        return { 
+            ".$pk.":\"\",
+            form :
+            {";
+            foreach ($non_pk as $row) {
+                $string .= "
+                ".$row["column_name"].":\"\",
+            ";
+             
+            }
+$string.="}";   
+$string.="    
+        }
+    },
+
+    methods: {
+        simpan() {
+            var _this=this;
+            $.post(\"".$c_url."/create_action\",_this.form,function(){
+                alertify.success(\"Berhasil\")
+            })
+          }
+
+  }
+
+})
+
+const routes = [
+  { path: '/', component: 'menu-awal' },
+  { path: '/tambah', component: 'form' },
+  { path: '/lihat', component: 'form' },
+  { path: '/ubah', component: 'form' }
+]
+
+const router = new VueRouter({
+  routes 
+})
+
+var app = new Vue({
+    router,
+    el: '#app',
+    data: {
+        x:1,
+        b: 'border',
+        c: 'border fixed-bottom footer',
+        m5: 'my-5',
+        center: 'text-center my-3',
+        k_item: 'card my-2',
+        footer_khz: 'footer-khz',
+
+        icon: 'fas fa-user',
+        nama: 'Admin',
+    }
+
+});
+</script>";
 
 $hasil_view_list = createFile($string, $target."views/"  . $v_list_file);
 
