@@ -21,7 +21,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <link rel="stylesheet" href="<?php echo base_url(); ?>/assets/css/AdminLTE.min.css">
   <link rel="stylesheet" href="<?php echo base_url(); ?>/assets/css/bootstrap.min.css">
   <link rel="stylesheet" href="<?php echo base_url(); ?>/assets/css/custom.css">
+  <link rel="stylesheet" href="<?php echo base_url(); ?>/assets/css/style.css">
   <link href="<?php echo base_url();?>assets/css/bootstrap-datepicker3.css" rel="stylesheet">
+  
+  <link rel="stylesheet" href="<?php echo base_url(); ?>/assets/css/bootstrap-vue.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0-12/css/all.css" integrity="sha256-qQHUQX+gGGYfpC7Zdni08sr+h0ymXr0avmIASucY4FM=" crossorigin="anonymous" />
+  <link href="<?php echo base_url(); ?>/assets/css/animate.css@3.5.1.css" rel="stylesheet" type="text/css">
   <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
         page. However, you can choose any other skin. Make sure you
         apply the skin class to the body tag so the changes take effect.
@@ -76,7 +81,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <script src="<?php echo base_url();?>assets/js/bootstrap-datepicker.js"></script>
   <script src="<?php echo base_url();?>assets/js/selectize.js" type="text/javascript"></script>
   <script src="<?php echo base_url();?>assets/js/d3.min.js" type="text/javascript"></script>
+  
   <script src="<?php echo base_url();?>assets/js/vue.min.js" type="text/javascript"></script>
+  <script src="<?php echo base_url();?>assets/js/vue-router.js" type="text/javascript"></script>
+  <script src="<?php echo base_url();?>assets/js/bootstrap-vue.js" type="text/javascript"></script>
   
 <div class="container">
     <div class="row">
