@@ -22,8 +22,8 @@ class Model_supplier extends CI_Model
         //add this line for join
         //$this->datatables->join('table2', 'timbangan_m_supplier.field = table2.field');
         $this->datatables->add_column('action', anchor(base_url('m_supplier/read/$1'),'<button class="btn btn-primary btn-sm"><i class="fa fa-angle-right"></i> Lihat</button>')."
-        ".anchor(base_url('m_supplier/update/$1'),'<button class="btn btn-success btn-sm"><i class="fa fa-edit"></i> Edit</button>')."
-        ".anchor(base_url('m_supplier/delete/$1'),'<button class="btn btn-danger btn-sm"><i class="fa fa-times"></i> Hapus</button>','onclick="javasciprt: return confirm(\'Are You Sure ?\')"'), 'uniqid');
+        ".anchor(base_url('m_supplier/update/$1'),'<button class="btn btn-success btn-sm"><i class="fa fa-edit"></i> Ubah</button>')."
+        ".anchor(base_url('m_supplier/delete/$1'),'<button class="btn btn-danger btn-sm"><i class="fa fa-times"></i> Hapus</button>','onclick="javasciprt: return confirm(\'Yakin ingin menghapus data ini ?\')"'), 'uniqid');
         return $this->datatables->generate();
     }
 

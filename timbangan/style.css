@@ -1,0 +1,57 @@
+body{padding-top: 60px;
+    font-family: 'Livvic', sans-serif;
+    background-color: #f2f2f2;
+    background-image: url("assets/img/connected.png");
+    /* This is mostly intended for prototyping; please download the pattern and re-host for production environments. Thank you! */
+}
+
+/* colors */
+.kotak-hijau{background: #4caf50;}
+.kotak-hijau:hover{background: #66bb6a;}
+
+.kotak-merah{background: #f44336;}
+.kotak-merah:hover{background: #ef5350;}
+
+.kotak-biru{background: #2196f3;}
+.kotak-biru:hover{background: #42a5fe;}
+
+.navbar{min-height: 80px;}
+
+.footer{ background: #222; color: white;}
+.footer-khz{ padding: 3px 10px; background: #333; border-radius:3px; }
+
+.block {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.text-dark:hover{color:#333;text-decoration: none;}
+.judul-menu{font-size: 20px; font-weight: 800; letter-spacing: 1px;}
+.ikon-besar{font-size: 40px; text-decoration: none; color: #fff; padding: 10px 0px;}
+.bulat {
+    color: white;
+    border-radius: 50%;
+    text-align: center;
+    vertical-align: middle!important;
+    font-size: 30px;
+    height: 100px; width: 100px;
+    padding-top: 35px;
+}
+
+.bulat:hover{cursor: pointer;}
+
+/* Fixes dropdown menus placed on the right side */
+    .ml-auto .dropdown-menu {
+      left: auto !important;
+      right: 0px;
+    }
+
+.biru{background:#2196f3;}
+.merah{background: #f44336;}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .7s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}

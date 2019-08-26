@@ -43,13 +43,17 @@
                             <div class="form-group">
 
                                 <label>Untuk Pembayaran</label>
-                                <div class="input-group">
-                                    <select id="id_timbang" style="width: 60%" placeholder="Pembayaran"> </select>
-                                    <div class="input-group-prepend">
-                                        <div class="input-group-text"><button type="" onclick="isi_jumlah()">Pilih</button></div>
-                                    </div>
+                                <div class="clearfix"></div>
+
+                                <div class="pull-left" style="width: 70%!important">
+                                    <select id="id_timbang" style="width: 100%" class="pull-left"  placeholder="Pembayaran"> </select>
                                 </div>
-                                
+                                <div class="pull-right" style="width: 30%!important">
+                                    <button class="btn btn-block btn-primary" style="padding: 5px 5px; margin-left: 10px;" type="" onclick="isi_jumlah()">Pilih</button>
+                                </div>
+                                <div class="clearfix"></div>
+
+
                             </div>
                         </div>
 

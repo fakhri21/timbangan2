@@ -30,7 +30,7 @@
                 </div>
             </div>
 
-            <table style="width:100%;" class="table table-bordered table-striped" id="mytable">
+            <table style="width:100%!important;" class="table table-bordered table-striped" id="mytable">
                 <thead>
                     <tr>
                         <th>No</th>
@@ -75,21 +75,21 @@
                     });
             },
             oLanguage: {
-                "sEmptyTable":   "Tidak ada data yang tersedia pada tabel ini",
-            "sProcessing":   "Sedang memproses...",
-            "sLengthMenu":   "Tampilkan _MENU_ entri",
-            "sZeroRecords":  "Tidak ditemukan data yang sesuai",
-            "sInfo":         "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
-            "sInfoEmpty":    "Menampilkan 0 sampai 0 dari 0 entri",
-            "sInfoFiltered": "(disaring dari _MAX_ entri keseluruhan)",
-            "sInfoPostFix":  "",
-            "sSearch":       "Cari:",
-            "sUrl":          "",
-            "oPaginate": {
-                "sFirst":    "Pertama",
-                "sPrevious": "Sebelumnya",
-                "sNext":     "Selanjutnya",
-                "sLast":     "Terakhir"
+                    "sEmptyTable":   "Tidak ada data yang tersedia pada tabel ini",
+                    "sProcessing":   "Sedang memproses...",
+                    "sLengthMenu":   "Tampilkan &nbsp; _MENU_ &nbsp; data",
+                    "sZeroRecords":  "Tidak ditemukan data yang sesuai",
+                    "sInfo":         "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+                    "sInfoEmpty":    "Menampilkan 0 sampai 0 dari 0 data",
+                    "sInfoFiltered": "(disaring dari _MAX_ data keseluruhan)",
+                    "sInfoPostFix":  "",
+                    "sSearch":       "Cari:",
+                    "sUrl":          "",
+                    "oPaginate": {
+                        "sFirst":    "Pertama",
+                        "sPrevious": "Sebelumnya",
+                        "sNext":     "Selanjutnya",
+                        "sLast":     "Terakhir"
 
                 }
             },
