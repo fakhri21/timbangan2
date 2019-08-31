@@ -2,7 +2,6 @@
 namespace um\admin\core;
 
 
-// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 
@@ -165,8 +164,8 @@ if ( ! class_exists( 'um\admin\core\Admin_Enqueue' ) ) {
 		 */
 		function load_role_wrapper() {
 			wp_register_script( 'um_admin_role_wrapper', $this->js_url . 'um-admin-role-wrapper.js', array( 'jquery' ), ultimatemember_version, true );
-			$localize_roles_data =  get_option( 'um_roles' );
-			wp_localize_script( 'um_admin_role_wrapper', 'um_roles', $localize_roles_data );
+			$localize_roles_data = get_option( 'um_roles' );
+			wp_localize_script( 'um_admin_role_wrapper', 'um_roles', (array) $localize_roles_data );
 			wp_enqueue_script( 'um_admin_role_wrapper' );
 		}
 
@@ -195,9 +194,9 @@ if ( ! class_exists( 'um\admin\core\Admin_Enqueue' ) ) {
 		function admin_head() {
 			if ( UM()->admin()->is_plugin_post_type() ) { ?>
 				<style type="text/css">
-					.um-admin.post-type-<?php echo get_post_type(); ?> div#slugdiv,
-					.um-admin.post-type-<?php echo get_post_type(); ?> div#minor-publishing,
-					.um-admin.post-type-<?php echo get_post_type(); ?> div#screen-meta-links
+					.um-admin.post-type-<?php echo esc_attr( get_post_type() ); ?> div#slugdiv,
+					.um-admin.post-type-<?php echo esc_attr( get_post_type() ); ?> div#minor-publishing,
+					.um-admin.post-type-<?php echo esc_attr( get_post_type() ); ?> div#screen-meta-links
 					{display:none}
 				</style>
 			<?php }

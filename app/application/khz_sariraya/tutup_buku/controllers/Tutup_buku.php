@@ -25,16 +25,14 @@ class Tutup_buku extends CI_Controller
         if ($this->priode_hari) {
           $data['hari']=date_format(date_create($this->priode_hari),"d/m/Y");
         }
-        $this->load->view('kontent_tutup_buku', $data);
-        
-        //$this->template->load($this->nama_template,'tutup_buku',$data);
+        echo json_encode($data);
     }
     
     public function buka_timbangan()
     {
       update_option('buka_timbangan',current_time( 'mysql' ));
-      $this->session->set_flashdata('message_success', 'Berhasil Buka Timbangan');
-      redirect(base_url('timbangan'));
+      echo ('Berhasil Buka Timbangan');
+      
     }
 
     public function eod()
@@ -48,9 +46,7 @@ class Tutup_buku extends CI_Controller
         $priode=get_option('buka_timbangan');
         $this->Model_Tutup_Buku->eod('timbangan_h_penimbangan',$priode);
         update_option('buka_timbangan','');
-        $this->session->set_flashdata('message_success', 'Berhasil EOD Timbangan');
-        redirect(base_url('tutup_buku'));
-      
+        echo ('Berhasil EOD Timbangan'); 
     }
     
     

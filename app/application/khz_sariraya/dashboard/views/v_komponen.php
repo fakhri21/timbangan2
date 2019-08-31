@@ -35,9 +35,9 @@
         <b-row>
             <b-col md="12">
                 <b-button @click="goBack" class="mb-3"><i class="fas fa-angle-left"></i> Kembali</b-button>
-                <b-alert variant="success" show><i class="fas fa-info-circle"></i> Status timbangan saat ini : <b>{{status}}</b></b-alert>
-                <b-button variant="primary" class="mb-4"><i class="fas fa-door-open"></i> Buka Timbangan</b-button>
-                <b-button variant="danger" class="mb-4"><i class="fas fa-door-closed"></i> Tutup Timbangan</b-button>
+                <b-alert variant="success" show><i class="fas fa-info-circle"></i> Status timbangan saat ini : <b>{{status}}</b>  <b>{{hari}}</b></b-alert>
+                <b-button v-if="hari===''" @click="buka_timbangan" variant="primary" class="mb-4"><i class="fas fa-door-open"></i> Buka Timbangan</b-button>
+                <b-button v-else @click="tutup_timbangan" variant="danger" class="mb-4"><i class="fas fa-door-closed"></i> Tutup Timbangan</b-button>
 
             </b-col>
         <b-col md="4" sm="4" v-bind:class="c_untuk_kolom_item" v-for="menuitem in menu">
@@ -102,13 +102,13 @@ var base_url ="<?php echo base_url() ?>"
                     value : 'ke-menu-timbangan',
                     status :'internal'
                 },
-
+/* 
                 {
                     judul: 'Piutang Dagang',
                     ikon: 'fas fa-file-contract ikon-besar',
                     value : 'ke-menu-piutang',
                     status :'internal'
-                },
+                }, */
 
                 {
                     judul: 'Konfigurasi',
@@ -159,19 +159,22 @@ Vue.component('menu-timbangan', {
                 {
                     judul: 'Timbangan Utama',
                     ikon: 'fas fa-shopping-cart ikon-besar',
-                    value : '#'
+                    value : 'timbangan',
+                    status:'eksternal'
                 },
 
                 {
                     judul: 'Daftar Struk',
                     ikon: 'fas fa-file-alt ikon-besar',
-                    value : '#'
+                    value : 'daftar_struk',
+                    status:'eksternal'
                 },
 
                 {
                     judul: 'Laporan Umum',
                     ikon: 'fas fa-file ikon-besar',
-                    value : '#'
+                    value : 'laporan',
+                    status:'eksternal'
                 },
             ],
 
@@ -180,17 +183,49 @@ Vue.component('menu-timbangan', {
             c_untuk_itemnya: 'card-body',
             text_hitam: 'text-light judul-menu',
 
-            status: 'terbuka',
+            status: 'Terbuka',
+            hari:''
 
 
         }
     },
-
+    created() {
+      var _this=this
+      _this.refresh_timbangan()  
+    },
     methods: {
     goBack () {
       window.history.length > 1
         ? this.$router.go(-1)
         : this.$router.push('/')
+    },
+    refresh_timbangan:function () {
+        var _this=this
+        $.getJSON("<?php echo base_url('tutup_buku') ?>",function (json) {
+            _this.hari=json.hari
+            if (_this.hari!='') {
+                _this.status='Terbuka'
+            }
+            else{
+              _this.status='Tertutup'  
+
+            }
+        })
+    },
+    buka_timbangan:function(){
+        var _this=this
+        $.post("<?php echo base_url('tutup_buku/buka_timbangan') ?>",function (json) {
+            _this.refresh_timbangan()
+            alertify.success(json)
+        })  
+    },
+    tutup_timbangan:function(){
+        var _this=this
+        $.post("<?php echo base_url('tutup_buku/eod') ?>",function (json) {
+            _this.refresh_timbangan()
+            alertify.success(json)
+
+        })  
     }
   }
 
@@ -235,13 +270,13 @@ Vue.component('menu-piutang', {
 
         }
     },
-
     methods: {
     goBack () {
       window.history.length > 1
         ? this.$router.go(-1)
         : this.$router.push('/')
     }
+    
   }
 
 })

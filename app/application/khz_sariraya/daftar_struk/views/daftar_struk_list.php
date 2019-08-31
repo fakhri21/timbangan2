@@ -8,7 +8,6 @@ function goBack() {
 }
 </script> 
 </div>
-
     <div class="row mb-2">
         <div class="col">
             <div class="box box-primary" style="margin-top: 40px;">
@@ -82,7 +81,7 @@ function goBack() {
                 "sNext":     "Selanjutnya",
                 "sLast":     "Terakhir"
 
-        },
+        }},
         processing: true,
         serverSide: false,
         ajax: {"url": "daftar_struk/json", "type": "POST"},

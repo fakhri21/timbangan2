@@ -490,6 +490,10 @@ function um_add_submit_button_to_register( $args ) {
 	 */
 	$primary_btn_word = apply_filters('um_register_form_button_one', $primary_btn_word, $args );
 
+	if ( ! isset( $primary_btn_word ) || $primary_btn_word == '' ){
+		$primary_btn_word = UM()->options()->get( 'register_primary_btn_word' );
+	}
+
 	$secondary_btn_word = $args['secondary_btn_word'];
 	/**
 	 * UM hook
@@ -514,6 +518,10 @@ function um_add_submit_button_to_register( $args ) {
 	 * ?>
 	 */
 	$secondary_btn_word = apply_filters( 'um_register_form_button_two', $secondary_btn_word, $args );
+
+	if ( ! isset( $secondary_btn_word ) || $secondary_btn_word == '' ){
+		$secondary_btn_word = UM()->options()->get( 'register_secondary_btn_word' );
+	}
 
 	$secondary_btn_url = ( isset( $args['secondary_btn_url'] ) && $args['secondary_btn_url'] ) ? $args['secondary_btn_url'] : um_get_core_page('login');
 	/**
@@ -548,7 +556,7 @@ function um_add_submit_button_to_register( $args ) {
 				<input type="submit" value="<?php esc_attr_e( wp_unslash( $primary_btn_word ), 'ultimate-member' ) ?>" class="um-button" id="um-submit-btn" />
 			</div>
 			<div class="um-right um-half">
-				<a href="<?php echo esc_attr( $secondary_btn_url ); ?>" class="um-button um-alt">
+				<a href="<?php echo esc_url( $secondary_btn_url ); ?>" class="um-button um-alt">
 					<?php _e( wp_unslash( $secondary_btn_word ),'ultimate-member' ); ?>
 				</a>
 			</div>

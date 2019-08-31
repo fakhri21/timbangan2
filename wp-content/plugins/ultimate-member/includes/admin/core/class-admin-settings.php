@@ -2,7 +2,6 @@
 namespace um\admin\core;
 
 
-// Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 
@@ -87,10 +86,10 @@ if ( ! class_exists( 'um\admin\core\Admin_Settings' ) ) {
 		function init_variables() {
 			$general_pages_fields = array(
 				array(
-					'id'       		=> 'pages_settings',
-					'type'     		=> 'hidden',
-					'default'       => true,
-					'is_option'     => false
+					'id'        => 'pages_settings',
+					'type'      => 'hidden',
+					'default'   => true,
+					'is_option' => false
 				)
 			);
 
@@ -104,21 +103,21 @@ if ( ! class_exists( 'um\admin\core\Admin_Settings' ) ) {
 
 				if ( 'reached_maximum_limit' == $have_pages ) {
 					$general_pages_fields[] = array(
-						'id'       		=> $page_id,
-						'type'     		=> 'text',
-						'label'    		=> sprintf( __( '%s page', 'ultimate-member' ), $page_title ),
-						'placeholder' 	=> __('Add page ID','ultimate-member'),
-						'compiler' 		=> true,
+						'id'            => $page_id,
+						'type'          => 'text',
+						'label'         => sprintf( __( '%s page', 'ultimate-member' ), $page_title ),
+						'placeholder'   => __( 'Add page ID', 'ultimate-member' ),
+						'compiler'      => true,
 						'size'          => 'small'
 					);
 				} else {
 					$general_pages_fields[] = array(
-						'id'       		=> $page_id,
-						'type'     		=> 'select',
-						'label'    		=> sprintf( __( '%s page', 'ultimate-member' ), $page_title ),
-						'options' 		=> UM()->query()->wp_pages(),
-						'placeholder' 	=> __('Choose a page...','ultimate-member'),
-						'compiler' 		=> true,
+						'id'            => $page_id,
+						'type'          => 'select',
+						'label'         => sprintf( __( '%s page', 'ultimate-member' ), $page_title ),
+						'options'       => UM()->query()->wp_pages(),
+						'placeholder'   => __( 'Choose a page...', 'ultimate-member' ),
+						'compiler'      => true,
 						'size'          => 'small'
 					);
 				}
@@ -129,71 +128,113 @@ if ( ! class_exists( 'um\admin\core\Admin_Settings' ) ) {
 				array(
 					'id'    => 'profile_menu',
 					'type'  => 'checkbox',
-					'label' => __('Enable profile menu','ultimate-member'),
+					'label' => __( 'Enable profile menu', 'ultimate-member' ),
 				)
 			);
 
-			$tabs = UM()->profile()->tabs_primary();
+			$tabs = UM()->profile()->tabs();
 
+			$tabs_options = array();
+			$tabs_condition = array();
 			foreach ( $tabs as $id => $tab ) {
 
-				$appearances_profile_menu_fields = array_merge( $appearances_profile_menu_fields, array(
-					array(
-						'id'            => 'profile_tab_' . $id,
-						'type'          => 'checkbox',
-						'label'         => sprintf( __( '%s Tab', 'ultimate-member' ), $tab ),
-						'conditional'   => array( 'profile_menu', '=', 1 ),
-					),
-					array(
-						'id'            => 'profile_tab_' . $id . '_privacy',
-						'type'          => 'select',
-						'label'         => sprintf( __( 'Who can see %s Tab?', 'ultimate-member' ), $tab ),
-						'tooltip'       => __( 'Select which users can view this tab.', 'ultimate-member' ),
-						'options'       => UM()->profile()->tabs_privacy(),
-						'conditional'   => array( 'profile_tab_' . $id, '=', 1 ),
-						'size'          => 'small'
-					),
-					array(
-						'id'            => 'profile_tab_' . $id . '_roles',
-						'type'          => 'select',
-						'multi'         => true,
-						'label'         => __( 'Allowed roles','ultimate-member' ),
-						'tooltip'       => __( 'Select the the user roles allowed to view this tab.','ultimate-member' ),
-						'options'       => UM()->roles()->get_roles(),
-						'placeholder'   => __( 'Choose user roles...','ultimate-member' ),
-						'conditional'   => array( 'profile_tab_' . $id . '_privacy', '=', 4 ),
-						'size'          => 'small'
-					)
-				) );
+				if ( ! empty( $tab['hidden'] ) ) {
+					continue;
+				}
+
+				if ( isset( $tab['name'] ) ) {
+					$tabs_options[ $id ] = $tab['name'];
+					$tabs_condition[] = 'profile_tab_' . $id;
+				}
+
+				if ( isset( $tab['default_privacy'] ) ) {
+					$fields = array(
+						array(
+							'id'            => 'profile_tab_' . $id,
+							'type'          => 'checkbox',
+							'label'         => sprintf( __( '%s Tab', 'ultimate-member' ), $tab['name'] ),
+							'conditional'   => array( 'profile_menu', '=', 1 ),
+							'data'          => array( 'fill_profile_menu_default_tab' => $id ),
+						),
+					);
+				} else {
+
+					$fields = array(
+						array(
+							'id'            => 'profile_tab_' . $id,
+							'type'          => 'checkbox',
+							'label'         => sprintf( __( '%s Tab', 'ultimate-member' ), $tab['name'] ),
+							'conditional'   => array( 'profile_menu', '=', 1 ),
+							'data'          => array( 'fill_profile_menu_default_tab' => $id ),
+						),
+						array(
+							'id'            => 'profile_tab_' . $id . '_privacy',
+							'type'          => 'select',
+							'label'         => sprintf( __( 'Who can see %s Tab?', 'ultimate-member' ), $tab['name'] ),
+							'tooltip'       => __( 'Select which users can view this tab.', 'ultimate-member' ),
+							'options'       => UM()->profile()->tabs_privacy(),
+							'conditional'   => array( 'profile_tab_' . $id, '=', 1 ),
+							'size'          => 'small'
+						),
+						array(
+							'id'            => 'profile_tab_' . $id . '_roles',
+							'type'          => 'select',
+							'multi'         => true,
+							'label'         => __( 'Allowed roles', 'ultimate-member' ),
+							'tooltip'       => __( 'Select the the user roles allowed to view this tab.', 'ultimate-member' ),
+							'options'       => UM()->roles()->get_roles(),
+							'placeholder'   => __( 'Choose user roles...', 'ultimate-member' ),
+							'conditional'   => array( 'profile_tab_' . $id . '_privacy', '=', 4 ),
+							'size'          => 'small'
+						)
+					);
+				}
+
+				$appearances_profile_menu_fields = array_merge( $appearances_profile_menu_fields, $fields );
 			}
 
+			$appearances_profile_menu_fields[] = array(
+				'id'            => 'profile_menu_default_tab',
+				'type'          => 'select',
+				'label'         => __( 'Profile menu default tab', 'ultimate-member' ),
+				'tooltip'       => __( 'This will be the default tab on user profile page', 'ultimate-member' ),
+				'options'       => $tabs_options,
+				'conditional'   => array( implode( '|', $tabs_condition ), '~', 1 ),
+				'size'          => 'small'
+			);
+
 			$appearances_profile_menu_fields = array_merge( $appearances_profile_menu_fields, array(
-				array(
-					'id'            => 'profile_menu_default_tab',
-					'type'          => 'select',
-					'label'         => __( 'Profile menu default tab', 'ultimate-member' ),
-					'tooltip'       => __( 'This will be the default tab on user profile page', 'ultimate-member' ),
-					'options'       => UM()->profile()->tabs_enabled(),
-					'conditional'   => array( 'profile_menu', '=', 1 ),
-					'size'          => 'small'
-				),
 				array(
 					'id'            => 'profile_menu_icons',
 					'type'          => 'checkbox',
 					'label'         => __( 'Enable menu icons in desktop view', 'ultimate-member' ),
 					'conditional'   => array( 'profile_menu', '=', 1 ),
-				)
+				),
 			) );
 
-			$all_post_types = get_post_types( array( 'public' => true ) );
+			$post_types_options = array();
+			$all_post_types = get_post_types( array( 'public' => true ), 'objects' );
+			foreach ( $all_post_types as $key => $post_type_data ) {
+				$post_types_options[ $key ] = $post_type_data->labels->singular_name;
+			}
 
-			$all_taxonomies = get_taxonomies( array( 'public' => true ) );
+			$taxonomies_options = array();
 			$exclude_taxonomies = UM()->excluded_taxonomies();
-
+			$all_taxonomies = get_taxonomies( array( 'public' => true ), 'objects' );
+			$duplicates = array();
 			foreach ( $all_taxonomies as $key => $taxonomy ) {
-				if( in_array( $key , $exclude_taxonomies ) ) {
-					unset( $all_taxonomies[ $key ] );
+				if ( in_array( $key , $exclude_taxonomies ) ) {
+					continue;
 				}
+
+				if ( ! in_array( $taxonomy->labels->singular_name, $duplicates ) ) {
+					$duplicates[] = $taxonomy->labels->singular_name;
+					$label = $taxonomy->labels->singular_name;
+				} else {
+					$label = $taxonomy->labels->singular_name . ' (' . $key . ')';
+				}
+
+				$taxonomies_options[ $key ] = $label;
 			}
 
 			$restricted_access_post_metabox_value = array();
@@ -217,57 +258,58 @@ if ( ! class_exists( 'um\admin\core\Admin_Settings' ) ) {
 
 			$access_fields = array(
 				array(
-					'id'       		=> 'accessible',
-					'type'     		=> 'select',
-					'label'   		=> __( 'Global Site Access','ultimate-member' ),
-					'tooltip' 	=> __('Globally control the access of your site, you can have seperate restrict options per post/page by editing the desired item.','ultimate-member'),
-					'options' 		=> array(
-						0 		=> 'Site accessible to Everyone',
-						2 		=> 'Site accessible to Logged In Users'
+					'id'        => 'accessible',
+					'type'      => 'select',
+					'label'     => __( 'Global Site Access', 'ultimate-member' ),
+					'tooltip'   => __( 'Globally control the access of your site, you can have seperate restrict options per post/page by editing the desired item.', 'ultimate-member' ),
+					'options'   => array(
+						0   => __( 'Site accessible to Everyone', 'ultimate-member' ),
+						2   => __( 'Site accessible to Logged In Users', 'ultimate-member' ),
 					),
-					'size'          => 'medium'
+					'size'      => 'medium',
 				),
 				array(
-					'id'       		=> 'access_redirect',
-					'type'     		=> 'text',
-					'label'   		=> __( 'Custom Redirect URL','ultimate-member' ),
-					'tooltip' 	=> __('A logged out user will be redirected to this url If he is not permitted to access the site','ultimate-member'),
-					'conditional'		=> array( 'accessible', '=', 2 ),
+					'id'            => 'access_redirect',
+					'type'          => 'text',
+					'label'         => __( 'Custom Redirect URL', 'ultimate-member' ),
+					'tooltip'       => __( 'A logged out user will be redirected to this url If he is not permitted to access the site', 'ultimate-member' ),
+					'conditional'   => array( 'accessible', '=', 2 ),
 				),
 				array(
-					'id'       		=> 'access_exclude_uris',
-					'type'     		=> 'multi_text',
-					'label'    		=> __( 'Exclude the following URLs','ultimate-member' ),
-					'tooltip' 	=> __( 'Here you can exclude URLs beside the redirect URI to be accessible to everyone','ultimate-member' ),
-					'add_text'		=> __('Add New URL','ultimate-member'),
-					'conditional'		=> array( 'accessible', '=', 2 ),
-					'show_default_number' => 1,
+					'id'                    => 'access_exclude_uris',
+					'type'                  => 'multi_text',
+					'label'                 => __( 'Exclude the following URLs', 'ultimate-member' ),
+					'tooltip'               => __( 'Here you can exclude URLs beside the redirect URI to be accessible to everyone', 'ultimate-member' ),
+					'add_text'              => __( 'Add New URL', 'ultimate-member' ),
+					'conditional'           => array( 'accessible', '=', 2 ),
+					'show_default_number'   => 1,
 				),
 				array(
-					'id'       		=> 'home_page_accessible',
-					'type'     		=> 'checkbox',
-					'label'   		=> __( 'Allow Homepage to be accessible','ultimate-member' ),
-					'conditional'		=> array( 'accessible', '=', 2 ),
+					'id'            => 'home_page_accessible',
+					'type'          => 'checkbox',
+					'label'         => __( 'Allow Homepage to be accessible', 'ultimate-member' ),
+					'conditional'   => array( 'accessible', '=', 2 ),
 				),
 				array(
-					'id'       		=> 'category_page_accessible',
-					'type'     		=> 'checkbox',
-					'label'   		=> __( 'Allow Category pages to be accessible','ultimate-member' ),
-					'conditional'		=> array( 'accessible', '=', 2 ),
+					'id'            => 'category_page_accessible',
+					'type'          => 'checkbox',
+					'label'         => __( 'Allow Category pages to be accessible', 'ultimate-member' ),
+					'conditional'   => array( 'accessible', '=', 2 ),
 				),
 				array(
 					'id'        => 'restricted_access_message',
 					'type'      => 'wp_editor',
-					'label'     => __( 'Restricted Access Message','ultimate-member' ),
-					'tooltip'   => __( 'This is the message shown to users that do not have permission to view the content','ultimate-member' ),
+					'label'     => __( 'Restricted Access Message', 'ultimate-member' ),
+					'tooltip'   => __( 'This is the message shown to users that do not have permission to view the content', 'ultimate-member' ),
 				)
 			);
+
 			global $wp_version;
 			if ( version_compare( $wp_version, '5.0', '>=' ) ) {
 				$access_fields = array_merge( $access_fields, array( array(
-					'id'       		=> 'restricted_blocks',
-					'type'     		=> 'checkbox',
-					'label'   		=> __( 'Allow Gutenberg Blocks restriction options', 'ultimate-member' ),
+					'id'    => 'restricted_blocks',
+					'type'  => 'checkbox',
+					'label' => __( 'Allow Gutenberg Blocks restriction options', 'ultimate-member' ),
 				),
 				array(
 					'id'            => 'restricted_block_message',
@@ -277,35 +319,36 @@ if ( ! class_exists( 'um\admin\core\Admin_Settings' ) ) {
 					'conditional'   => array( 'restricted_blocks', '=', 1 ),
 				) ) );
 			}
-			$access_fields = array_merge( $access_fields, array( array(
-				'id'       		=> 'restricted_access_post_metabox',
-				'type'     		=> 'hidden',
-				'value'         => '',
-			),
+			$access_fields = array_merge( $access_fields, array(
 				array(
-					'id'       		=> 'restricted_access_taxonomy_metabox',
-					'type'     		=> 'hidden',
-					'value'         => '',
+					'id'    => 'restricted_access_post_metabox',
+					'type'  => 'hidden',
+					'value' => '',
 				),
 				array(
-					'id'       		=> 'restricted_access_post_metabox',
-					'type'     		=> 'multi_checkbox',
-					'label'   		=> __( 'Restricted Access to Posts','ultimate-member' ),
-					'tooltip'   => __( 'Restriction content of the current Posts','ultimate-member' ),
-					'options'       => $all_post_types,
-					'columns'       => 3,
-					'value' 		=> $restricted_access_post_metabox_value,
-					'default' 		=> UM()->options()->get_default( 'restricted_access_post_metabox' ),
+					'id'    => 'restricted_access_taxonomy_metabox',
+					'type'  => 'hidden',
+					'value' => '',
 				),
 				array(
-					'id'       		=> 'restricted_access_taxonomy_metabox',
-					'type'     		=> 'multi_checkbox',
-					'label'   		=> __( 'Restricted Access to Taxonomies','ultimate-member' ),
-					'tooltip'   => __( 'Restriction content of the current Taxonomies','ultimate-member' ),
-					'options'       => $all_taxonomies,
-					'columns'       => 3,
-					'value' 		=> $restricted_access_taxonomy_metabox_value,
-					'default' 		=> UM()->options()->get_default( 'restricted_access_taxonomy_metabox' ),
+					'id'        => 'restricted_access_post_metabox',
+					'type'      => 'multi_checkbox',
+					'label'     => __( 'Restricted Access to Posts', 'ultimate-member' ),
+					'tooltip'   => __( 'Restriction content of the current Posts', 'ultimate-member' ),
+					'options'   => $post_types_options,
+					'columns'   => 3,
+					'value'     => $restricted_access_post_metabox_value,
+					'default'   => UM()->options()->get_default( 'restricted_access_post_metabox' ),
+				),
+				array(
+					'id'        => 'restricted_access_taxonomy_metabox',
+					'type'      => 'multi_checkbox',
+					'label'     => __( 'Restricted Access to Taxonomies', 'ultimate-member' ),
+					'tooltip'   => __( 'Restriction content of the current Taxonomies', 'ultimate-member' ),
+					'options'   => $taxonomies_options,
+					'columns'   => 3,
+					'value'     => $restricted_access_taxonomy_metabox_value,
+					'default'   => UM()->options()->get_default( 'restricted_access_taxonomy_metabox' ),
 			) ) );
 
 
@@ -331,8 +374,8 @@ if ( ! class_exists( 'um\admin\core\Admin_Settings' ) ) {
 			 */
 			$this->settings_structure = apply_filters( 'um_settings_structure', array(
 				''              => array(
-					'title'       => __( 'General', 'ultimate-member' ),
-					'sections'    => array(
+					'title'     => __( 'General', 'ultimate-member' ),
+					'sections'  => array(
 						''          => array(
 							'title'     => __( 'Pages', 'ultimate-member' ),
 							'fields'    => $general_pages_fields
@@ -341,19 +384,19 @@ if ( ! class_exists( 'um\admin\core\Admin_Settings' ) ) {
 							'title'     => __( 'Users', 'ultimate-member' ),
 							'fields'    => array(
 								array(
-									'id'       		=> 'permalink_base',
-									'type'     		=> 'select',
+									'id'            => 'permalink_base',
+									'type'          => 'select',
 									'size'          => 'small',
-									'label'    		=> __( 'Profile Permalink Base','ultimate-member' ),
-									'tooltip' 	=> __( 'Here you can control the permalink structure of the user profile URL globally e.g. ' . trailingslashit( um_get_core_page('user') ) . '<strong>username</strong>/','ultimate-member' ),
-									'options' 		=> array(
-										'user_login' 		=> __('Username','ultimate-member'),
-										'name' 				=> __('First and Last Name with \'.\'','ultimate-member'),
-										'name_dash' 		=> __('First and Last Name with \'-\'','ultimate-member'),
-										'name_plus' 		=> __('First and Last Name with \'+\'','ultimate-member'),
-										'user_id' 			=> __('User ID','ultimate-member'),
+									'label'         => __( 'Profile Permalink Base','ultimate-member' ),
+									'tooltip'       => __( 'Here you can control the permalink structure of the user profile URL globally e.g. ' . trailingslashit( um_get_core_page('user') ) . '<strong>username</strong>/','ultimate-member' ),
+									'options'       => array(
+										'user_login' 		=> __( 'Username', 'ultimate-member' ),
+										'name' 				=> __( 'First and Last Name with \'.\'', 'ultimate-member' ),
+										'name_dash' 		=> __( 'First and Last Name with \'-\'', 'ultimate-member' ),
+										'name_plus' 		=> __( 'First and Last Name with \'+\'', 'ultimate-member' ),
+										'user_id' 			=> __( 'User ID', 'ultimate-member' ),
 									),
-									'placeholder' 	=> __('Select...','ultimate-member'),
+									'placeholder'   => __( 'Select...', 'ultimate-member' ),
 								),
 								array(
 									'id'       		=> 'display_name',
@@ -581,59 +624,59 @@ if ( ! class_exists( 'um\admin\core\Admin_Settings' ) ) {
 					)
 				),
 				'access'        => array(
-					'title'       => __( 'Access', 'ultimate-member' ),
-					'sections'    => array(
+					'title'     => __( 'Access', 'ultimate-member' ),
+					'sections'  => array(
 						''      => array(
 							'title'     => __( 'Restriction Content', 'ultimate-member' ),
 							'fields'    => $access_fields
 						),
 						'other' => array(
 							'title'     => __( 'Other', 'ultimate-member' ),
-							'fields'      => array(
+							'fields'    => array(
 								array(
-									'id'       		=> 'enable_reset_password_limit',
-									'type'     		=> 'checkbox',
-									'label'   		=> __( 'Enable the Reset Password Limit?','ultimate-member' ),
+									'id'    => 'enable_reset_password_limit',
+									'type'  => 'checkbox',
+									'label' => __( 'Enable the Reset Password Limit?', 'ultimate-member' ),
 								),
 								array(
-									'id'       		=> 'reset_password_limit_number',
-									'type'     		=> 'text',
-									'label'   		=> __( 'Reset Password Limit','ultimate-member' ),
-									'tooltip' 	=> __('Set the maximum reset password limit. If reached the maximum limit, user will be locked from using this.','ultimate-member'),
-									'validate'		=> 'numeric',
-									'conditional'   => array('enable_reset_password_limit','=',1),
-									'size'          => 'um-small-field',
+									'id'            => 'reset_password_limit_number',
+									'type'          => 'text',
+									'label'         => __( 'Reset Password Limit', 'ultimate-member' ),
+									'tooltip'       => __( 'Set the maximum reset password limit. If reached the maximum limit, user will be locked from using this.', 'ultimate-member' ),
+									'validate'      => 'numeric',
+									'conditional'   => array( 'enable_reset_password_limit', '=', 1 ),
+									'size'          => 'small',
 								),
 								array(
-									'id'       		=> 'blocked_emails',
-									'type'     		=> 'textarea',
-									'label'    		=> __( 'Blocked Email Addresses','ultimate-member' ),
-									'tooltip'	=> __('This will block the specified e-mail addresses from being able to sign up or sign in to your site. To block an entire domain, use something like *@domain.com','ultimate-member'),
+									'id'        => 'blocked_emails',
+									'type'      => 'textarea',
+									'label'     => __( 'Blocked Email Addresses', 'ultimate-member' ),
+									'tooltip'   => __( 'This will block the specified e-mail addresses from being able to sign up or sign in to your site. To block an entire domain, use something like *@domain.com', 'ultimate-member' ),
 								),
 								array(
-									'id'       		=> 'blocked_words',
-									'type'     		=> 'textarea',
-									'label'    		=> __( 'Blacklist Words','ultimate-member' ),
-									'tooltip'	=> __('This option lets you specify blacklist of words to prevent anyone from signing up with such a word as their username','ultimate-member'),
+									'id'        => 'blocked_words',
+									'type'      => 'textarea',
+									'label'     => __( 'Blacklist Words', 'ultimate-member' ),
+									'tooltip'   => __( 'This option lets you specify blacklist of words to prevent anyone from signing up with such a word as their username', 'ultimate-member' ),
 								)
 							)
 						),
 					)
 				),
 				'email'         => array(
-					'title'       => __( 'Email', 'ultimate-member' ),
-					'fields'      => array(
+					'title'     => __( 'Email', 'ultimate-member' ),
+					'fields'    => array(
 						array(
-							'id'            => 'admin_email',
-							'type'          => 'text',
-							'label'         => __( 'Admin E-mail Address', 'ultimate-member' ),
+							'id'        => 'admin_email',
+							'type'      => 'text',
+							'label'     => __( 'Admin E-mail Address', 'ultimate-member' ),
 							'tooltip'   => __( 'e.g. admin@companyname.com','ultimate-member' ),
 						),
 						array(
-							'id'            => 'mail_from',
-							'type'          => 'text',
-							'label'         => __( 'Mail appears from','ultimate-member' ),
-							'tooltip' 	=> __( 'e.g. Site Name','ultimate-member' ),
+							'id'        => 'mail_from',
+							'type'      => 'text',
+							'label'     => __( 'Mail appears from','ultimate-member' ),
+							'tooltip'   => __( 'e.g. Site Name','ultimate-member' ),
 						),
 						array(
 							'id'            => 'mail_from_addr',
@@ -650,8 +693,8 @@ if ( ! class_exists( 'um\admin\core\Admin_Settings' ) ) {
 					)
 				),
 				'appearance'    => array(
-					'title'       => __( 'Appearance', 'ultimate-member' ),
-					'sections'    => array(
+					'title'     => __( 'Appearance', 'ultimate-member' ),
+					'sections'  => array(
 						''                  => array(
 							'title'     => __( 'Profile', 'ultimate-member' ),
 							'fields'    => array(
@@ -684,7 +727,7 @@ if ( ! class_exists( 'um\admin\core\Admin_Settings' ) ) {
 								array(
 									'id'       		=> 'profile_icons',
 									'type'     		=> 'select',
-									'label'    		=> __( 'Profile Field Icons' ),
+									'label'    		=> __( 'Profile Field Icons','ultimate-member' ),
 									'tooltip' 	=> __( 'This is applicable for edit mode only','ultimate-member' ),
 									'default'  		=> um_get_metadefault('profile_icons'),
 									'options' 		=> array(
@@ -736,6 +779,12 @@ if ( ! class_exists( 'um\admin\core\Admin_Settings' ) ) {
 									'label'    			=> __('Default Cover Photo', 'ultimate-member'),
 									'tooltip'     	=> __('You can change the default cover photo globally here. Please make sure that the default cover is large enough and respects the ratio you are using for cover photos.', 'ultimate-member'),
 									'upload_frame_title'=> __('Select Default Cover Photo', 'ultimate-member'),
+								),
+								array(
+									'id'        => 'disable_profile_photo_upload',
+									'type'      => 'checkbox',
+									'label'     => __( 'Disable Profile Photo Upload', 'ultimate-member' ),
+									'tooltip'   => __( 'Switch on/off the profile photo uploader', 'ultimate-member' ),
 								),
 								array(
 									'id'      		=> 'profile_photosize',
@@ -814,12 +863,12 @@ if ( ! class_exists( 'um\admin\core\Admin_Settings' ) ) {
 								array(
 									'id'       		=> 'profile_header_menu',
 									'type'     		=> 'select',
-									'label'    		=> __( 'Profile Header Menu Position','ultimate-member' ),
+									'label'    		=> __( 'Profile Header Menu Position', 'ultimate-member' ),
 									'default' 		=> um_get_metadefault('profile_header_menu'),
-									'tooltip' 	=> __('For incompatible themes, please make the menu open from left instead of bottom by default.','ultimate-member'),
+									'tooltip' 	=> __( 'For incompatible themes, please make the menu open from left instead of bottom by default.','ultimate-member'),
 									'options' 		=> array(
-										'bc' 		=> 'Bottom of Icon',
-										'lc' 		=> 'Left of Icon',
+										'bc' 		=> __( 'Bottom of Icon', 'ultimate-member' ),
+										'lc' 		=> __( 'Left of Icon (right for RTL)', 'ultimate-member' ),
 									),
 									'size'          => 'small'
 								),
@@ -1032,32 +1081,32 @@ if ( ! class_exists( 'um\admin\core\Admin_Settings' ) ) {
 					)
 				),
 				'extensions'    => array(
-					'title'       => __( 'Extensions', 'ultimate-member' )
+					'title' => __( 'Extensions', 'ultimate-member' )
 				),
 				'licenses'      => array(
-					'title'       => __( 'Licenses', 'ultimate-member' ),
+					'title' => __( 'Licenses', 'ultimate-member' ),
 				),
 				'misc'          => array(
-					'title'       => __( 'Misc', 'ultimate-member' ),
-					'fields'      => array(
+					'title'     => __( 'Misc', 'ultimate-member' ),
+					'fields'    => array(
 						array(
-							'id'       		=> 'form_asterisk',
-							'type'     		=> 'checkbox',
-							'label'    		=> __( 'Show an asterisk for required fields','ultimate-member' ),
+							'id'    => 'form_asterisk',
+							'type'  => 'checkbox',
+							'label' => __( 'Show an asterisk for required fields', 'ultimate-member' ),
 						),
 						array(
-							'id'      		=> 'profile_title',
-							'type'     		=> 'text',
-							'label'    		=> __('User Profile Title','ultimate-member'),
-							'tooltip' 	=> __('This is the title that is displayed on a specific user profile','ultimate-member'),
-							'size'          => 'medium'
+							'id'        => 'profile_title',
+							'type'      => 'text',
+							'label'     => __( 'User Profile Title', 'ultimate-member' ),
+							'tooltip'   => __( 'This is the title that is displayed on a specific user profile', 'ultimate-member' ),
+							'size'      => 'medium'
 						),
 						array(
-							'id'       		=> 'profile_desc',
-							'type'     		=> 'textarea',
-							'label'    		=> __( 'User Profile Dynamic Meta Description','ultimate-member' ),
-							'tooltip'	=> __('This will be used in the meta description that is available for search-engines.','ultimate-member'),
-							'args'          => array(
+							'id'        => 'profile_desc',
+							'type'      => 'textarea',
+							'label'     => __( 'User Profile Dynamic Meta Description', 'ultimate-member' ),
+							'tooltip'   => __( 'This will be used in the meta description that is available for search-engines.', 'ultimate-member' ),
+							'args'      => array(
 								'textarea_rows' => 6
 							)
 						),
@@ -1084,18 +1133,18 @@ if ( ! class_exists( 'um\admin\core\Admin_Settings' ) ) {
 							),
 						),
 						array(
-							'id'       		=> 'uninstall_on_delete',
-							'type'     		=> 'checkbox',
-							'label'   		=> __( 'Remove Data on Uninstall?', 'ultimate-member' ),
-							'tooltip'	=> __( 'Check this box if you would like Ultimate Member to completely remove all of its data when the plugin/extensions are deleted.', 'ultimate-member' ),
+							'id'        => 'uninstall_on_delete',
+							'type'      => 'checkbox',
+							'label'     => __( 'Remove Data on Uninstall?', 'ultimate-member' ),
+							'tooltip'   => __( 'Check this box if you would like Ultimate Member to completely remove all of its data when the plugin/extensions are deleted.', 'ultimate-member' ),
 						)
 					)
 				),
 				'install_info'  => array(
-					'title'       => __( 'Install Info', 'ultimate-member' ),
-					'fields'      => array(
+					'title'     => __( 'Install Info', 'ultimate-member' ),
+					'fields'    => array(
 						array(
-							'type'     		=> 'install_info',
+							'type'  => 'install_info',
 						),
 					)
 				),
@@ -1190,20 +1239,23 @@ if ( ! class_exists( 'um\admin\core\Admin_Settings' ) ) {
 
 			//remove not option hidden fields
 			if ( ! empty( $settings_struct['fields'] ) ) {
-				foreach ( $settings_struct['fields'] as $field_key=>$field_options ) {
+				foreach ( $settings_struct['fields'] as $field_key => $field_options ) {
 
-					if ( isset( $field_options['is_option'] ) && $field_options['is_option'] === false )
-						unset( $settings_struct['fields'][$field_key] );
+					if ( isset( $field_options['is_option'] ) && $field_options['is_option'] === false ) {
+						unset( $settings_struct['fields'][ $field_key ] );
+					}
 
 				}
 			}
 
-			if ( empty( $settings_struct['fields'] ) && empty( $settings_struct['sections'] ) )
+			if ( empty( $settings_struct['fields'] ) && empty( $settings_struct['sections'] ) ) {
 				um_js_redirect( add_query_arg( array( 'page' => 'um_options' ), admin_url( 'admin.php' ) ) );
+			}
 
 			if ( ! empty( $settings_struct['sections'] ) ) {
-				if ( empty( $settings_struct['sections'][$current_subtab] ) )
+				if ( empty( $settings_struct['sections'][ $current_subtab ] ) ) {
 					um_js_redirect( add_query_arg( array( 'page' => 'um_options', 'tab' => $current_tab ), admin_url( 'admin.php' ) ) );
+				}
 			}
 
 			echo '<div id="um-settings-wrap" class="wrap"><h2>' .  __( 'Ultimate Member - Settings', 'ultimate-member' ) . '</h2>';
@@ -1282,14 +1334,6 @@ if ( ! class_exists( 'um\admin\core\Admin_Settings' ) ) {
 
 			} else { ?>
 
-				<!--                <?php /*if ( empty( $settings_struct['sections'][$current_subtab] ) )
-                    $title = $this->settings_structure[$current_tab]['title'];
-                else
-                    $title = $this->settings_structure[$current_tab]['sections'][$current_subtab]['title'];
-                */?>
-
-                <h3><?php /*echo $title */?></h3>-->
-
 				<form method="post" action="" name="um-settings-form" id="um-settings-form">
 					<input type="hidden" value="save" name="um-settings-action" />
 
@@ -1340,22 +1384,18 @@ if ( ! class_exists( 'um\admin\core\Admin_Settings' ) ) {
 					echo apply_filters( 'um_settings_section_' . $current_tab . '_' . $current_subtab . '_content',
 						$settings_section,
 						$section_fields
-					);
-					?>
+					); ?>
 
 
 					<p class="submit">
-						<input type="submit" name="submit" id="submit" class="button button-primary" value="<?php _e( 'Save Changes', 'ultimate-member' ) ?>" />
+						<input type="submit" name="submit" id="submit" class="button button-primary" value="<?php esc_attr_e( 'Save Changes', 'ultimate-member' ) ?>" />
 						<?php $um_settings_nonce = wp_create_nonce( 'um-settings-nonce' ); ?>
-						<input type="hidden" name="__umnonce" value="<?php echo $um_settings_nonce; ?>" />
+						<input type="hidden" name="__umnonce" value="<?php echo esc_attr( $um_settings_nonce ); ?>" />
 					</p>
 				</form>
 
 			<?php }
-
-			/*echo '</div>';*/
 		}
-
 
 
 		/**
@@ -1373,21 +1413,22 @@ if ( ! class_exists( 'um\admin\core\Admin_Settings' ) ) {
 					$menu_tabs = array();
 					foreach ( $this->settings_structure as $slug => $tab ) {
 						if ( ! empty( $tab['fields'] ) ) {
-							foreach ( $tab['fields'] as $field_key=>$field_options ) {
+							foreach ( $tab['fields'] as $field_key => $field_options ) {
 								if ( isset( $field_options['is_option'] ) && $field_options['is_option'] === false ) {
-									unset( $tab['fields'][$field_key] );
+									unset( $tab['fields'][ $field_key ] );
 								}
 							}
 						}
 
-						if ( ! empty( $tab['fields'] ) || ! empty( $tab['sections'] ) )
-							$menu_tabs[$slug] = $tab['title'];
+						if ( ! empty( $tab['fields'] ) || ! empty( $tab['sections'] ) ) {
+							$menu_tabs[ $slug ] = $tab['title'];
+						}
 					}
 
 					$current_tab = empty( $_GET['tab'] ) ? '' : urldecode( $_GET['tab'] );
-					foreach ( $menu_tabs as $name=>$label ) {
+					foreach ( $menu_tabs as $name => $label ) {
 						$active = ( $current_tab == $name ) ? 'nav-tab-active' : '';
-						$tabs .= '<a href="' . admin_url( 'admin.php?page=um_options' . ( empty( $name ) ? '' : '&tab=' . $name ) ) . '" class="nav-tab ' . $active . '">' .
+						$tabs .= '<a href="' . esc_url( admin_url( 'admin.php?page=um_options' . ( empty( $name ) ? '' : '&tab=' . $name ) ) ) . '" class="nav-tab ' . $active . '">' .
 						         $label .
 						         '</a>';
 					}
@@ -1428,12 +1469,13 @@ if ( ! class_exists( 'um\admin\core\Admin_Settings' ) ) {
 		 * @return string
 		 */
 		function generate_subtabs_menu( $tab = '' ) {
-			if ( empty( $this->settings_structure[$tab]['sections'] ) )
+			if ( empty( $this->settings_structure[ $tab ]['sections'] ) ) {
 				return '';
+			}
 
 			$menu_subtabs = array();
-			foreach ( $this->settings_structure[$tab]['sections'] as $slug => $subtab ) {
-				$menu_subtabs[$slug] = $subtab['title'];
+			foreach ( $this->settings_structure[ $tab ]['sections'] as $slug => $subtab ) {
+				$menu_subtabs[ $slug ] = $subtab['title'];
 			}
 
 			$subtabs = '<div><ul class="subsubsub">';
@@ -1442,7 +1484,7 @@ if ( ! class_exists( 'um\admin\core\Admin_Settings' ) ) {
 			$current_subtab = empty( $_GET['section'] ) ? '' : urldecode( $_GET['section'] );
 			foreach ( $menu_subtabs as $name => $label ) {
 				$active = ( $current_subtab == $name ) ? 'current' : '';
-				$subtabs .= '<a href="' . admin_url( 'admin.php?page=um_options' . ( empty( $current_tab ) ? '' : '&tab=' . $current_tab ) . ( empty( $name ) ? '' : '&section=' . $name ) ) . '" class="' . $active . '">'
+				$subtabs .= '<a href="' . esc_url( admin_url( 'admin.php?page=um_options' . ( empty( $current_tab ) ? '' : '&tab=' . $current_tab ) . ( empty( $name ) ? '' : '&section=' . $name ) ) ) . '" class="' . $active . '">'
 				            . $label .
 				            '</a> | ';
 			}
@@ -1462,7 +1504,7 @@ if ( ! class_exists( 'um\admin\core\Admin_Settings' ) ) {
 
 				$nonce = ! empty( $_POST['__umnonce'] ) ? $_POST['__umnonce'] : '';
 
-				if ( ( ! wp_verify_nonce( $nonce, 'um-settings-nonce' ) || empty( $nonce ) ) || ! current_user_can('manage_options') ) {
+				if ( ( ! wp_verify_nonce( $nonce, 'um-settings-nonce' ) || empty( $nonce ) ) || ! current_user_can( 'manage_options' ) ) {
 					// This nonce is not valid.
 					wp_die( 'Security Check' );
 				}
@@ -1529,18 +1571,20 @@ if ( ! class_exists( 'um\admin\core\Admin_Settings' ) ) {
 				 * }
 				 * ?>
 				 */
-				do_action( "um_settings_save" );
+				do_action( 'um_settings_save' );
 
 				//redirect after save settings
 				$arg = array(
 					'page' => 'um_options',
 				);
 
-				if ( ! empty( $_GET['tab'] ) )
+				if ( ! empty( $_GET['tab'] ) ) {
 					$arg['tab'] = $_GET['tab'];
+				}
 
-				if ( ! empty( $_GET['section'] ) )
+				if ( ! empty( $_GET['section'] ) ) {
 					$arg['section'] = $_GET['section'];
+				}
 
 				um_js_redirect( add_query_arg( $arg, admin_url( 'admin.php' ) ) );
 			}
@@ -1555,30 +1599,34 @@ if ( ! class_exists( 'um\admin\core\Admin_Settings' ) ) {
 		 */
 		function remove_empty_values( $settings ) {
 			$tab = '';
-			if ( ! empty( $_GET['tab'] ) )
+			if ( ! empty( $_GET['tab'] ) ) {
 				$tab = $_GET['tab'];
+			}
 
 			$section = '';
-			if ( ! empty( $_GET['section'] ) )
+			if ( ! empty( $_GET['section'] ) ) {
 				$section = $_GET['section'];
+			}
 
-			if ( isset( $this->settings_structure[$tab]['sections'][$section]['fields'] ) )
-				$fields = $this->settings_structure[$tab]['sections'][$section]['fields'];
-			else
-				$fields = $this->settings_structure[$tab]['fields'];
+			if ( isset( $this->settings_structure[ $tab ]['sections'][ $section ]['fields'] ) ) {
+				$fields = $this->settings_structure[ $tab ]['sections'][ $section ]['fields'];
+			} else {
+				$fields = $this->settings_structure[ $tab ]['fields'];
+			}
 
-			if ( empty( $fields ) )
+			if ( empty( $fields ) ) {
 				return $settings;
+			}
 
 
 			$filtered_settings = array();
-			foreach ( $settings as $key=>$value ) {
+			foreach ( $settings as $key => $value ) {
 
-				$filtered_settings[$key] = $value;
+				$filtered_settings[ $key ] = $value;
 
-				foreach( $fields as $field ) {
+				foreach ( $fields as $field ) {
 					if ( $field['id'] == $key && isset( $field['type'] ) && $field['type'] == 'multi_text' ) {
-						$filtered_settings[$key] = array_filter( $settings[$key] );
+						$filtered_settings[ $key ] = array_filter( $settings[ $key ] );
 					}
 				}
 			}
@@ -1649,11 +1697,12 @@ if ( ! class_exists( 'um\admin\core\Admin_Settings' ) ) {
 		 *
 		 */
 		function before_licenses_save() {
-			if ( empty( $_POST['um_options'] ) || empty( $_POST['licenses_settings'] ) )
+			if ( empty( $_POST['um_options'] ) || empty( $_POST['licenses_settings'] ) ) {
 				return;
+			}
 
 			foreach ( $_POST['um_options'] as $key => $value ) {
-				$this->previous_licenses[$key] = UM()->options()->get( $key );
+				$this->previous_licenses[ $key ] = UM()->options()->get( $key );
 			}
 		}
 
@@ -1662,25 +1711,27 @@ if ( ! class_exists( 'um\admin\core\Admin_Settings' ) ) {
 		 *
 		 */
 		function licenses_save() {
-			if ( empty( $_POST['um_options'] ) || empty( $_POST['licenses_settings'] ) )
+			if ( empty( $_POST['um_options'] ) || empty( $_POST['licenses_settings'] ) ) {
 				return;
+			}
 
 			foreach ( $_POST['um_options'] as $key => $value ) {
 				$edd_action = '';
 				$license_key = '';
-				if ( empty( $this->previous_licenses[$key] ) && ! empty( $value ) || ( ! empty( $this->previous_licenses[$key] ) && ! empty( $value ) && $this->previous_licenses[$key] != $value ) ) {
+				if ( empty( $this->previous_licenses[ $key ] ) && ! empty( $value ) || ( ! empty( $this->previous_licenses[ $key ] ) && ! empty( $value ) && $this->previous_licenses[ $key ] != $value ) ) {
 					$edd_action = 'activate_license';
 					$license_key = $value;
-				} elseif ( ! empty( $this->previous_licenses[$key] ) && empty( $value ) ) {
+				} elseif ( ! empty( $this->previous_licenses[ $key ] ) && empty( $value ) ) {
 					$edd_action = 'deactivate_license';
-					$license_key = $this->previous_licenses[$key];
-				} elseif ( ! empty( $this->previous_licenses[$key] ) && ! empty( $value ) ) {
+					$license_key = $this->previous_licenses[ $key ];
+				} elseif ( ! empty( $this->previous_licenses[ $key ] ) && ! empty( $value ) ) {
 					$edd_action = 'check_license';
 					$license_key = $value;
 				}
 
-				if ( empty( $edd_action ) )
+				if ( empty( $edd_action ) ) {
 					continue;
+				}
 
 				$item_name = false;
 				$version = false;
@@ -1711,15 +1762,17 @@ if ( ! class_exists( 'um\admin\core\Admin_Settings' ) ) {
 					)
 				);
 
-				if ( ! is_wp_error( $request ) )
+				if ( ! is_wp_error( $request ) ) {
 					$request = json_decode( wp_remote_retrieve_body( $request ) );
+				}
 
 				$request = ( $request ) ? maybe_unserialize( $request ) : false;
 
-				if ( $edd_action == 'activate_license' || $edd_action == 'check_license' )
+				if ( $edd_action == 'activate_license' || $edd_action == 'check_license' ) {
 					update_option( "{$key}_edd_answer", $request );
-				else
+				} else {
 					delete_option( "{$key}_edd_answer" );
+				}
 
 			}
 		}
@@ -1776,30 +1829,30 @@ if ( ! class_exists( 'um\admin\core\Admin_Settings' ) ) {
 			 */
 			$section_fields = apply_filters( 'um_admin_settings_email_section_fields', array(
 				array(
-					'id'            => 'um_email_template',
-					'type'          => 'hidden',
-					'value'         => $email_key,
+					'id'    => 'um_email_template',
+					'type'  => 'hidden',
+					'value' => $email_key,
 				),
 				array(
-					'id'            => $email_key . '_on',
-					'type'          => 'checkbox',
-					'label'         => $emails[$email_key]['title'],
-					'tooltip'       => $emails[$email_key]['description'],
+					'id'        => $email_key . '_on',
+					'type'      => 'checkbox',
+					'label'     => $emails[ $email_key ]['title'],
+					'tooltip'   => $emails[ $email_key ]['description'],
 				),
 				array(
-					'id'       => $email_key . '_sub',
-					'type'     => 'text',
-					'label'    => __( 'Subject Line','ultimate-member' ),
-					'conditional' => array( $email_key . '_on', '=', 1 ),
-					'tooltip' => __('This is the subject line of the e-mail','ultimate-member'),
+					'id'            => $email_key . '_sub',
+					'type'          => 'text',
+					'label'         => __( 'Subject Line', 'ultimate-member' ),
+					'conditional'   => array( $email_key . '_on', '=', 1 ),
+					'tooltip'       => __( 'This is the subject line of the e-mail', 'ultimate-member' ),
 				),
 				array(
 					'id'            => $email_key,
 					'type'          => 'email_template',
-					'label'         => __( 'Message Body','ultimate-member' ),
+					'label'         => __( 'Message Body', 'ultimate-member' ),
 					'conditional'   => array( $email_key . '_on', '=', 1 ),
-					'tooltip' 	    => __('This is the content of the e-mail','ultimate-member'),
-					'value' 		=> UM()->mail()->get_email_template( $email_key ),
+					'tooltip'       => __( 'This is the content of the e-mail', 'ultimate-member' ),
+					'value'         => UM()->mail()->get_email_template( $email_key ),
 					'in_theme'      => $in_theme
 				),
 			), $email_key );
@@ -1828,18 +1881,18 @@ if ( ! class_exists( 'um\admin\core\Admin_Settings' ) ) {
 			<div class="wrap-licenses">
 				<input type="hidden" id="licenses_settings" name="licenses_settings" value="1">
 				<?php $um_settings_nonce = wp_create_nonce( 'um-settings-nonce' ); ?>
-				<input type="hidden" name="__umnonce" value="<?php echo $um_settings_nonce; ?>" />
+				<input type="hidden" name="__umnonce" value="<?php echo esc_attr( $um_settings_nonce ); ?>" />
 				<table class="form-table um-settings-section">
 					<tbody>
 					<?php foreach ( $section_fields as $field_data ) {
 						$option_value = UM()->options()->get( $field_data['id'] );
-						$value = isset( $option_value )  && ! empty( $option_value ) ? $option_value : ( isset( $field_data['default'] ) ? $field_data['default'] : '' );
+						$value = isset( $option_value ) && ! empty( $option_value ) ? $option_value : ( isset( $field_data['default'] ) ? $field_data['default'] : '' );
 
 						$license = get_option( "{$field_data['id']}_edd_answer" );
 
 						if ( is_object( $license ) && ! empty( $value ) ) {
 							// activate_license 'invalid' on anything other than valid, so if there was an error capture it
-							if ( false === $license->success ) {
+							if ( empty( $license->success ) ) {
 
 								if ( ! empty( $license->error ) ) {
 									switch ( $license->error ) {
@@ -1884,16 +1937,16 @@ if ( ! class_exists( 'um\admin\core\Admin_Settings' ) ) {
 										case 'invalid' :
 										case 'site_inactive' :
 
-										$class = 'error';
-										$messages[] = sprintf(
-											__( 'Your %s is not active for this URL. Please <a href="%s" target="_blank">visit your account page</a> to manage your license key URLs.', 'ultimate-member' ),
-											$field_data['item_name'],
-											'https://ultimatemember.com/account?utm_campaign=admin&utm_source=licenses&utm_medium=invalid'
-										);
+											$class = 'error';
+											$messages[] = sprintf(
+												__( 'Your %s is not active for this URL. Please <a href="%s" target="_blank">visit your account page</a> to manage your license key URLs.', 'ultimate-member' ),
+												$field_data['item_name'],
+												'https://ultimatemember.com/account?utm_campaign=admin&utm_source=licenses&utm_medium=invalid'
+											);
 
-										$license_status = 'license-' . $class . '-notice';
+											$license_status = 'license-' . $class . '-notice';
 
-										break;
+											break;
 
 										case 'item_name_mismatch' :
 
@@ -1924,7 +1977,7 @@ if ( ! class_exists( 'um\admin\core\Admin_Settings' ) ) {
 										default :
 
 											$class = 'error';
-											$error = ! empty(  $license->error ) ?  $license->error : __( 'unknown_error', 'ultimate-member' );
+											$error = ! empty(  $license->error ) ? $license->error : __( 'unknown_error', 'ultimate-member' );
 											$messages[] = sprintf( __( 'There was an error with this license key: %s. Please <a href="%s">contact our support team</a>.', 'ultimate-member' ), $error, 'https://ultimatemember.com/support' );
 
 											$license_status = 'license-' . $class . '-notice';
@@ -1932,11 +1985,23 @@ if ( ! class_exists( 'um\admin\core\Admin_Settings' ) ) {
 									}
 								} else {
 									$class = 'error';
-									$error = ! empty(  $license->error ) ?  $license->error : __( 'unknown_error', 'ultimate-member' );
+									$error = ! empty( $license->error ) ? $license->error : __( 'unknown_error', 'ultimate-member' );
 									$messages[] = sprintf( __( 'There was an error with this license key: %s. Please <a href="%s">contact our support team</a>.', 'ultimate-member' ), $error, 'https://ultimatemember.com/support' );
 
 									$license_status = 'license-' . $class . '-notice';
 								}
+
+							} elseif ( ! empty( $license->errors ) ) {
+
+								$errors = array_keys( $license->errors );
+								$errors_data = array_values( $license->errors );
+
+								$class = 'error';
+								$error = ! empty( $errors[0] ) ? $errors[0] : __( 'unknown_error', 'ultimate-member' );
+								$errors_data = ! empty( $errors_data[0][0] ) ? ', ' . $errors_data[0][0] : '';
+								$messages[] = sprintf( __( 'There was an error with this license key: %s%s. Please <a href="%s">contact our support team</a>.', 'ultimate-member' ), $error, $errors_data, 'https://ultimatemember.com/support' );
+
+								$license_status = 'license-' . $class . '-notice';
 
 							} else {
 
@@ -1982,16 +2047,16 @@ if ( ! class_exists( 'um\admin\core\Admin_Settings' ) ) {
 									case 'invalid' :
 									case 'site_inactive' :
 
-									$class = 'error';
-									$messages[] = sprintf(
-										__( 'Your %s is not active for this URL. Please <a href="%s" target="_blank">visit your account page</a> to manage your license key URLs.', 'ultimate-member' ),
-										$field_data['item_name'],
-										'https://ultimatemember.com/account?utm_campaign=admin&utm_source=licenses&utm_medium=invalid'
-									);
+										$class = 'error';
+										$messages[] = sprintf(
+											__( 'Your %s is not active for this URL. Please <a href="%s" target="_blank">visit your account page</a> to manage your license key URLs.', 'ultimate-member' ),
+											$field_data['item_name'],
+											'https://ultimatemember.com/account?utm_campaign=admin&utm_source=licenses&utm_medium=invalid'
+										);
 
-									$license_status = 'license-' . $class . '-notice';
+										$license_status = 'license-' . $class . '-notice';
 
-									break;
+										break;
 
 									case 'item_name_mismatch' :
 
@@ -2022,39 +2087,39 @@ if ( ! class_exists( 'um\admin\core\Admin_Settings' ) ) {
 									case 'valid' :
 									default:
 
-									$class = 'valid';
+										$class = 'valid';
 
-									$now        = current_time( 'timestamp' );
-									$expiration = strtotime( $license->expires, current_time( 'timestamp' ) );
+										$now        = current_time( 'timestamp' );
+										$expiration = strtotime( $license->expires, $now );
 
-									if( 'lifetime' === $license->expires ) {
+										if( 'lifetime' === $license->expires ) {
 
-										$messages[] = __( 'License key never expires.', 'ultimate-member' );
+											$messages[] = __( 'License key never expires.', 'ultimate-member' );
 
-										$license_status = 'license-lifetime-notice';
+											$license_status = 'license-lifetime-notice';
 
-									} elseif( $expiration > $now && $expiration - $now < ( DAY_IN_SECONDS * 30 ) ) {
+										} elseif( $expiration > $now && $expiration - $now < ( DAY_IN_SECONDS * 30 ) ) {
 
-										$messages[] = sprintf(
-											__( 'Your license key expires soon! It expires on %s. <a href="%s" target="_blank">Renew your license key</a>.', 'ultimate-member' ),
-											date_i18n( get_option( 'date_format' ), strtotime( $license->expires, current_time( 'timestamp' ) ) ),
-											'https://ultimatemember.com/checkout/?edd_license_key=' . $value . '&utm_campaign=admin&utm_source=licenses&utm_medium=renew'
-										);
+											$messages[] = sprintf(
+												__( 'Your license key expires soon! It expires on %s. <a href="%s" target="_blank">Renew your license key</a>.', 'ultimate-member' ),
+												date_i18n( get_option( 'date_format' ), strtotime( $license->expires, current_time( 'timestamp' ) ) ),
+												'https://ultimatemember.com/checkout/?edd_license_key=' . $value . '&utm_campaign=admin&utm_source=licenses&utm_medium=renew'
+											);
 
-										$license_status = 'license-expires-soon-notice';
+											$license_status = 'license-expires-soon-notice';
 
-									} else {
+										} else {
 
-										$messages[] = sprintf(
-											__( 'Your license key expires on %s.', 'ultimate-member' ),
-											date_i18n( get_option( 'date_format' ), strtotime( $license->expires, current_time( 'timestamp' ) ) )
-										);
+											$messages[] = sprintf(
+												__( 'Your license key expires on %s.', 'ultimate-member' ),
+												date_i18n( get_option( 'date_format' ), strtotime( $license->expires, current_time( 'timestamp' ) ) )
+											);
 
-										$license_status = 'license-expiration-date-notice';
+											$license_status = 'license-expiration-date-notice';
 
-									}
+										}
 
-									break;
+										break;
 
 								}
 
@@ -2070,34 +2135,32 @@ if ( ! class_exists( 'um\admin\core\Admin_Settings' ) ) {
 
 							$license_status = null;
 
-						}
-
-						?>
+						} ?>
 
 						<tr class="um-settings-line">
-							<th><label for="um_options_<?php echo $field_data['id'] ?>"><?php echo $field_data['label'] ?></label></th>
+							<th><label for="um_options_<?php echo esc_attr( $field_data['id'] ) ?>"><?php echo esc_html( $field_data['label'] ) ?></label></th>
 							<td>
 								<form method="post" action="" name="um-settings-form" class="um-settings-form">
 									<input type="hidden" value="save" name="um-settings-action" />
 									<input type="hidden" name="licenses_settings" value="1" />
 									<?php $um_settings_nonce = wp_create_nonce( 'um-settings-nonce' ); ?>
-									<input type="hidden" name="__umnonce" value="<?php echo $um_settings_nonce; ?>" />
-									<input type="text" id="um_options_<?php echo $field_data['id'] ?>" name="um_options[<?php echo $field_data['id'] ?>]" value="<?php echo $value ?>" class="um-option-field um-long-field" data-field_id="<?php echo $field_data['id'] ?>" />
+									<input type="hidden" name="__umnonce" value="<?php echo esc_attr( $um_settings_nonce ); ?>" />
+									<input type="text" id="um_options_<?php echo esc_attr( $field_data['id'] ) ?>" name="um_options[<?php echo esc_attr( $field_data['id'] ) ?>]" value="<?php echo $value ?>" class="um-option-field um-long-field" data-field_id="<?php echo esc_attr( $field_data['id'] ) ?>" />
 									<?php if ( ! empty( $field_data['description'] ) ) { ?>
 										<div class="description"><?php echo $field_data['description'] ?></div>
 									<?php } ?>
 
 									<?php if ( ! empty( $value ) && ( ( is_object( $license ) && 'valid' == $license->license ) || 'valid' == $license ) ) { ?>
-										<input type="button" class="button um_license_deactivate" id="<?php echo $field_data['id'] ?>_deactivate" value="<?php _e( 'Clear License',  'ultimate-member' ) ?>"/>
+										<input type="button" class="button um_license_deactivate" id="<?php echo esc_attr( $field_data['id'] ) ?>_deactivate" value="<?php esc_attr_e( 'Clear License',  'ultimate-member' ) ?>"/>
 									<?php } elseif ( empty( $value ) ) { ?>
-										<input type="submit" name="submit" id="submit" class="button button-primary" value="<?php _e( 'Activate', 'ultimate-member' ) ?>" />
+										<input type="submit" name="submit" id="submit" class="button button-primary" value="<?php esc_attr_e( 'Activate', 'ultimate-member' ) ?>" />
 									<?php } else { ?>
-										<input type="submit" name="submit" id="submit" class="button button-primary" value="<?php _e( 'Re-Activate', 'ultimate-member' ) ?>" />
+										<input type="submit" name="submit" id="submit" class="button button-primary" value="<?php esc_attr_e( 'Re-Activate', 'ultimate-member' ) ?>" />
 									<?php }
 
 									if ( ! empty( $messages ) ) {
 										foreach ( $messages as $message ) { ?>
-											<div class="edd-license-data edd-license-<?php echo $class . ' ' . $license_status ?>">
+											<div class="edd-license-data edd-license-<?php echo esc_attr( $class . ' ' . $license_status ) ?>">
 												<p><?php echo $message ?></p>
 											</div>
 										<?php }
@@ -2126,14 +2189,14 @@ if ( ! class_exists( 'um\admin\core\Admin_Settings' ) ) {
 				require_once um_path . 'includes/lib/browser.php';
 
 			// Detect browser
-			$browser 	= new \Browser();
+			$browser = new \Browser();
 
 			// Get theme info
 			$theme_data = wp_get_theme();
 			$theme      = $theme_data->Name . ' ' . $theme_data->Version;
 
 			// Identify Hosting Provider
-			$host 		= um_get_host();
+			$host = um_get_host();
 
 			um_fetch_user( get_current_user_id() );
 
@@ -2234,7 +2297,7 @@ Memory Limit:   				<?php echo ( um_let_to_num( WP_MEMORY_LIMIT )/( 1024 ) )."MB
 --- UM Configurations ---
 
 Version:						<?php echo ultimatemember_version . "\n"; ?>
-Upgraded From:            		<?php echo get_option( 'um_version_upgraded_from', 'None' ) . "\n"; ?>
+Upgraded From:            		<?php echo get_option( 'um_last_version_upgrade', 'None' ) . "\n"; ?>
 Current URL Method:			<?php echo UM()->options()->get( 'current_url_method' ). "\n"; ?>
 Cache User Profile:			<?php if( UM()->options()->get( 'um_profile_object_cache_stop' ) == 1 ){ echo "No"; }else{ echo "Yes"; } echo "\n"; ?>
 Generate Slugs on Directories:	<?php if( UM()->options()->get( 'um_generate_slug_in_directory' ) == 1 ){ echo "No"; }else{ echo "Yes"; } echo "\n"; ?>
@@ -2563,8 +2626,8 @@ Use Only Cookies:         			<?php echo ini_get( 'session.use_only_cookies' ) ? 
 			ob_start();
 
 			UM()->admin_forms_settings( array(
-				'class'		=> 'um_options-' . $current_tab . '-' . $current_subtab . ' um-third-column',
-				'prefix_id'	=> 'um_options',
+				'class'     => 'um_options-' . $current_tab . '-' . $current_subtab . ' um-third-column',
+				'prefix_id' => 'um_options',
 				'fields'    => $section_fields
 			) )->render_form(); ?>
 

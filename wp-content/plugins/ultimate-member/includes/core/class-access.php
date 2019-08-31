@@ -372,15 +372,22 @@ if ( ! class_exists( 'um\core\Access' ) ) {
 		 * Old global restrict content logic
 		 */
 		function template_redirect() {
-			global $post;
+			global $post, $wp_query;
 
 			//if we logged by administrator it can access to all content
 			if ( current_user_can( 'administrator' ) )
 				return;
 
+			if ( is_object( $wp_query ) ) {
+				$is_singular = $wp_query->is_singular();
+			} else {
+				$is_singular = ! empty( $wp_query->is_singular ) ? true : false;
+			}
+
 			//if we use individual restrict content options skip this function
-			if ( $this->singular_page )
+			if ( $is_singular && $this->singular_page ) {
 				return;
+			}
 
 			//also skip if we currently at wp-admin or 404 page
 			if ( is_admin() || is_404() )
@@ -543,6 +550,7 @@ if ( ! class_exists( 'um\core\Access' ) ) {
 
 			//exclude from privacy UM default pages (except Members list and User(Profile) page)
 			if ( ! empty( $post->post_type ) && $post->post_type == 'page' ) {
+
 				if ( um_is_core_post( $post, 'login' ) || um_is_core_post( $post, 'register' ) ||
 				     um_is_core_post( $post, 'account' ) || um_is_core_post( $post, 'logout' ) ||
 				     um_is_core_post( $post, 'password-reset' ) || ( is_user_logged_in() && um_is_core_post( $post, 'user' ) ) )
@@ -593,6 +601,16 @@ if ( ! class_exists( 'um\core\Access' ) ) {
 
 						return false;
 					} else {
+
+						//set default redirect if Profile page is restricted for not-logged in users
+						if ( ! is_user_logged_in() && um_is_core_post( $post, 'user' ) && $restriction['_um_accessible'] == '2' ) {
+							if ( isset( $restriction['_um_access_roles'] ) ) {
+								$restriction = array( '_um_accessible' => '2', '_um_access_roles' => $restriction['_um_access_roles'], '_um_noaccess_action' => '1', '_um_access_redirect' => '1', '_um_access_redirect_url' => get_home_url( get_current_blog_id() ) );
+							} else {
+								$restriction = array( '_um_accessible' => '2', '_um_noaccess_action' => '1', '_um_access_redirect' => '1', '_um_access_redirect_url' => get_home_url( get_current_blog_id() ) );
+							}
+						}
+
 						return $restriction;
 					}
 				}
@@ -1220,7 +1238,7 @@ if ( ! class_exists( 'um\core\Access' ) ) {
 				}
 			}
 
-			$has_thumbnail = apply_filters("um_restrict_post_thumbnail", $has_thumbnail, $post, $thumbnail_id );
+			$has_thumbnail = apply_filters( 'um_restrict_post_thumbnail', $has_thumbnail, $post, $thumbnail_id );
 
 			return $has_thumbnail;
 		}
